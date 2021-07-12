@@ -23,6 +23,18 @@
       "password": "99102",
       "completeLevels": 1,
       "coins": 150
+    },
+    {
+      "username": "momeni",
+      "password": "212121",
+      "completeLevels": 1,
+      "coins": 0
+    },
+    {
+      "username": "mom",
+      "password": "1234",
+      "completeLevels": 1,
+      "coins": 0
     }
   ]
 }

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<GridPane alignment="center" hgap="10" vgap="10" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="graphicPackage.SignUp">
+   <columnConstraints>
+      <ColumnConstraints />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints />
+      <RowConstraints />
+   </rowConstraints>
+   <children>
+      <AnchorPane prefHeight="200.0" prefWidth="306.0">
+         <children>
+            <Label layoutX="56.0" layoutY="38.0" text="UserName:" />
+            <Label layoutX="56.0" layoutY="84.0" text="Password:" />
+            <TextField fx:id="userNameTxt" layoutX="156.0" layoutY="34.0" prefHeight="25.0" prefWidth="131.0" />
+            <PasswordField fx:id="passwordTxt" layoutX="156.0" layoutY="80.0" prefHeight="25.0" prefWidth="131.0" />
+            <Button fx:id="signUpClick" layoutX="194.0" layoutY="125.0" mnemonicParsing="false" onAction="#canSignUp" text="Ok" />
+            <Label fx:id="signUpLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="33.0" layoutY="161.0" prefHeight="25.0" prefWidth="235.0" text="  " textAlignment="CENTER" textFill="#f20303">
+               <font>
+                  <Font size="13.0" />
+               </font></Label>
+         </children>
+      </AnchorPane>
+   </children>
+</GridPane>
