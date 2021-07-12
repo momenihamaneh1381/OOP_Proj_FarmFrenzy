@@ -1,0 +1,200 @@
+{
+  "levels": 5,
+  "tasks": [
+    {
+      "initialCoins": 1500,
+      "goalCoins": 0,
+      "max_time": 15,
+      "prize": 150,
+      "wildAnimals": [
+        {
+          "x": 4,
+          "y": 2,
+          "max_cage": 4,
+          "cage": 0,
+          "speed": 1,
+          "capacity": 15,
+          "price": 400,
+          "max_time": 5,
+          "time": 0,
+          "direction": "RIGHT",
+          "animalType": "BEAR"
+        }
+      ],
+      "timeOfWildAnimals": [
+        5
+      ],
+      "numOfGoalProduct": 0,
+      "goalDomesticAnimal": {
+        "price": 0,
+        "x": 0,
+        "y": 0,
+        "max_Time": 0,
+        "time": 0,
+        "live": 0,
+        "animalType": "HEN"
+     },
+      "numOfGoalDomesticAnimal": 2
+    },
+    {
+      "initialCoins": 1000,
+      "goalCoins": 500,
+      "max_time": 10,
+      "prize": 100,
+      "wildAnimals": [
+        {
+          "x": 4,
+          "y": 2,
+          "max_cage": 4,
+          "cage": 0,
+          "speed": 1,
+          "capacity": 15,
+          "price": 400,
+          "max_time": 5,
+          "time": 0,
+          "direction": "RIGHT",
+          "animalType": "BEAR"
+        },
+        {
+          "x": 1,
+          "y": 6,
+          "max_cage": 4,
+          "cage": 0,
+          "speed": 2,
+          "capacity": 15,
+          "price": 500,
+          "max_time": 5,
+          "time": 0,
+          "direction": "DOWN",
+          "animalType": "TIGER"
+        }
+      ],
+      "timeOfWildAnimals": [
+        4,
+        7
+      ],
+      "goalProduct": {
+        "x": 0,
+        "y": 0,
+        "price": 0,
+        "capacity": 0,
+        "max_time": 0,
+        "time": 0,
+        "productType": "EGG"
+      },
+      "numOfGoalProduct": 5,
+      "goalDomesticAnimal": {
+        "price": 0,
+        "x": 0,
+        "y": 0,
+        "max_Time": 0,
+        "time": 0,
+        "live": 0,
+        "animalType": "TURKEY"
+      },
+      "numOfGoalDomesticAnimal": 2
+    },
+    {
+      "initialCoins": 1000,
+      "goalCoins": 500,
+      "max_time": 10,
+      "prize": 100,
+      "wildAnimals": [],
+      "goalProduct": {
+        "x": 0,
+        "y": 0,
+        "price": 0,
+        "capacity": 0,
+        "max_time": 0,
+        "time": 0,
+        "productType": "MILK"
+      },
+      "numOfGoalProduct": 5,
+      "goalDomesticAnimal": {
+        "price": 0,
+        "x": 0,
+        "y": 0,
+        "max_Time": 0,
+        "time": 0,
+        "live": 0,
+        "animalType": "BUFFALO"
+      },
+      "numOfGoalDomesticAnimal": 2
+    },
+    {
+      "initialCoins": 1000,
+      "goalCoins": 500,
+      "max_time": 10,
+      "prize": 100,
+      "wildAnimals": [
+        {
+          "x": 1,
+          "y": 6,
+          "max_cage": 4,
+          "cage": 0,
+          "speed": 2,
+          "capacity": 15,
+          "price": 500,
+          "max_time": 5,
+          "time": 0,
+          "direction": "DOWN",
+          "animalType": "TIGER"
+        }
+      ],
+      "timeOfWildAnimals": [
+        5
+      ],
+      "goalProduct": {
+        "x": 0,
+        "y": 0,
+        "price": 0,
+        "capacity": 0,
+        "max_time": 0,
+        "time": 0,
+        "productType": "ICE_CREAM"
+      },
+      "numOfGoalProduct": 1,
+      "numOfGoalDomesticAnimal": 0
+    },
+    {
+      "initialCoins": 1000,
+      "goalCoins": 2000,
+      "max_time": 10,
+      "prize": 100,
+      "wildAnimals": [
+        {
+          "x": 4,
+          "y": 2,
+          "max_cage": 4,
+          "cage": 0,
+          "speed": 1,
+          "capacity": 15,
+          "price": 400,
+          "max_time": 5,
+          "time": 0,
+          "direction": "RIGHT",
+          "animalType": "BEAR"
+        },
+        {
+          "x": 4,
+          "y": 5,
+          "max_cage": 3,
+          "cage": 0,
+          "speed": 1,
+          "capacity": 15,
+          "price": 300,
+          "max_time": 5,
+          "time": 0,
+          "direction": "UP",
+          "animalType": "LION"
+        }
+      ],
+      "timeOfWildAnimals": [
+        4,
+        7
+      ],
+      "numOfGoalProduct": 0,
+      "numOfGoalDomesticAnimal": 0
+    }
+  ]
+}

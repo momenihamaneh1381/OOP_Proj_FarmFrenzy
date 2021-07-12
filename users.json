@@ -1,0 +1,28 @@
+{
+  "accounts": [
+    {
+      "username": "momeni",
+      "password": "99102346",
+      "completeLevels": 1,
+      "coins": 1000
+    },
+    {
+      "username": "ali",
+      "password": "najafi",
+      "completeLevels": 1,
+      "coins": 1000
+    },
+    {
+      "username": "hamaneh",
+      "password": "99102",
+      "completeLevels": 3,
+      "coins": 150
+    },
+    {
+      "username": "hossein",
+      "password": "99102",
+      "completeLevels": 1,
+      "coins": 150
+    }
+  ]
+}
