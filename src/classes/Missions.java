@@ -1,13 +1,19 @@
 package classes;
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 
 public class Missions {
-    int levels;
+    public int levels;
     public Task[] tasks ;
 
     public Missions(int levels) {
         this.levels = levels;
         this.tasks = new Task[levels];
+//        for (int i = 0; i < levels; i++) {
+//            tasks[i]  = new Task();
+//        }
+
 //        int []a= {4 , 7};
 //        int []b = {5};
 //        Bear bear = new Bear();
@@ -42,5 +48,14 @@ public class Missions {
 
 
     }
+
+//    private void missionRead(Missions missions){
+//        FileOperator fileOperator = new FileOperator();
+//        String json =  fileOperator.read("missions.json");
+//        Gson gson = new Gson();
+//
+//        // convert JSON string to Mission object
+//        missions = gson.fromJson(json, Missions.class);
+//    }
 
 }

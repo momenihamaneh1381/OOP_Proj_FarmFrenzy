@@ -1,21 +1,46 @@
 package classes;
-public class Product implements Turn{
-    int x;
-    int y;
+
+import javafx.scene.shape.Rectangle;
+
+public class Product extends Rectangle implements Turn{
+    String name;
+    int centerX;
+    int centerY;
     int price;
     int capacity;
     int max_time;
     int time;
+    int num = 1;
+    Store store = Store.getInstanceStore();
     ProductType productType;
 
+    public int getNum() {
+        return num;
+    }
+
     public Product(ProductType productType) {
+        name = String.valueOf(productType);
         this.productType = productType;
     }
 
-    public Product(ProductType productType , int x , int y) {
-        this.x = x;
+    public String getName() {
+        return name;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public int getCapacity() {
+        return capacity;
+    }
+
+    public Product(ProductType productType , int centerx , int centery) {
+        super(centerx - 10 , centery - 10 , 20 , 20);
+        name = String.valueOf(productType);
+        this.centerX = centerx;
         time=0;
-        this.y=y;
+        this.centerY=centery;
         this.productType = productType;
         switch (productType){
             case EGG:
@@ -66,8 +91,17 @@ public class Product implements Turn{
         }
     }
 
+    public boolean isCollissionWildAnimals(WildAnimal wildAnimal) {
+        return this.intersects(wildAnimal.getLayoutBounds());
+    }
+    public boolean isCollissionCat(Cat cat) {
+        return this.intersects(cat.getLayoutBounds());
+    }
     @Override
     public void turn() {
         time++;
+    }
+    public boolean intersect(int x0 , int y0){
+        return x0>=(centerX-20)&&x0<=(centerX+20)&&y0>=(centerY-20)&&y0<=(centerY+20);
     }
 }

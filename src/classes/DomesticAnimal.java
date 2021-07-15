@@ -36,8 +36,14 @@ public class DomesticAnimal extends Animal implements Turn{
     public DomesticAnimal(AnimalType animalType , Pane parent) {
         super(1 , parent , animalType);
     }
-
-
+    
+    public boolean isCollissionGrass(Grass grass){
+        return this.intersects(grass.getLayoutBounds());
+        // TODO: 7/15/2021  
+    }
+    public boolean isCollissionWildAnimals(WildAnimal wildAnimal) {
+        return this.intersects(wildAnimal.getLayoutBounds());
+    }
 //    public void turn(ArrayList<Grass>grasses) {
 //        if (live>0) {
 //            live-=10;
@@ -74,43 +80,43 @@ public class DomesticAnimal extends Animal implements Turn{
         if (live>0) {
             live -= 10;
             time++;
-            if (x == 1 || y == 1 || x == 6 || y == 6) {
-                if (x == 1) {
-                    if (y == 1)
-                        direction = Direction.RIGHT;
-                    else if (y == 6)
-                        direction = Direction.UP;
-                    else
-                        direction = direction.randomDirectionExcept(Direction.LEFT);
-                } else if (x == 6) {
-                    if (y == 1)
-                        direction = Direction.DOWN;
-                    else if (y == 6)
-                        direction = Direction.LEFT;
-                    else
-                        direction = direction.randomDirectionExcept(Direction.RIGHT);
-                } else if (y == 1) {
-                    direction = direction.randomDirectionExcept(Direction.UP);
-                } else if (y == 6) {
-                    direction = direction.randomDirectionExcept(Direction.DOWN);
-                }
-            } else {
-                direction = direction.randomDirection();
-            }
-            switch (direction) {
-                case UP:
-                    y--;
-                    break;
-                case DOWN:
-                    y++;
-                    break;
-                case RIGHT:
-                    x++;
-                    break;
-                case LEFT:
-                    x--;
-                    break;
-            }
+//            if (x == 1 || y == 1 || x == 6 || y == 6) {
+//                if (x == 1) {
+//                    if (y == 1)
+//                        direction = Direction.RIGHT;
+//                    else if (y == 6)
+//                        direction = Direction.UP;
+//                    else
+//                        direction = direction.randomDirectionExcept(Direction.LEFT);
+//                } else if (x == 6) {
+//                    if (y == 1)
+//                        direction = Direction.DOWN;
+//                    else if (y == 6)
+//                        direction = Direction.LEFT;
+//                    else
+//                        direction = direction.randomDirectionExcept(Direction.RIGHT);
+//                } else if (y == 1) {
+//                    direction = direction.randomDirectionExcept(Direction.UP);
+//                } else if (y == 6) {
+//                    direction = direction.randomDirectionExcept(Direction.DOWN);
+//                }
+//            } else {
+//                direction = direction.randomDirection();
+//            }
+//            switch (direction) {
+//                case UP:
+//                    y--;
+//                    break;
+//                case DOWN:
+//                    y++;
+//                    break;
+//                case RIGHT:
+//                    x++;
+//                    break;
+//                case LEFT:
+//                    x--;
+//                    break;
+//            }
         }
     }
 

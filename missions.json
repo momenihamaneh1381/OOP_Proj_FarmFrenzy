@@ -1,4 +1,4 @@
-{
+      {
   "levels": 5,
   "tasks": [
     {
@@ -33,7 +33,7 @@
         "time": 0,
         "live": 0,
         "animalType": "HEN"
-     },
+      },
       "numOfGoalDomesticAnimal": 2
     },
     {

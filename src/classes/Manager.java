@@ -2,6 +2,7 @@ package classes;
 
 import com.google.gson.Gson;
 import graphicPackage.Game;
+import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 
 import java.io.Reader;
@@ -28,8 +29,13 @@ public class Manager {
     int maxAnimal;
     int maxCoin;
     Pane pane;
-    public Manager(Account account , Pane pane ) {
+    Task task;
+    Label wellSuccessLabel , storeSuccess , storeFail;
+    public Manager(Account account , Pane pane  , Label wellSuccessLabel , Label storeSuccess  , Label storeFail) {
         time = 0;
+        this.storeSuccess = storeSuccess;
+        this.storeFail = storeFail;
+        this.wellSuccessLabel = wellSuccessLabel;
          maxProduct=0;
          maxAnimal=0;
          maxCoin=0;
@@ -45,6 +51,12 @@ public class Manager {
         grasses = new ArrayList<>();
         wateringSystem = WateringSystem.getInstanceWateringSystem();
         this.pane = pane;
+
+        // TODO: 7/15/2021
+        int [] a = {1};
+        task = new Task(100 , a , 3000 , 50 , 200 );
+        task.wildAnimals.add(new Tiger(pane));
+        // TODO: 7/15/2021 task & missions
     }
 
     public void missionRead(Missions missions){
@@ -123,7 +135,7 @@ public class Manager {
         else {
             ArrayList<Product> goodProduct = new ArrayList<>();
             for (Product product : products) {
-                if (product.x==x&&product.y==y)
+                if (product.centerX==x&&product.centerY==y)
                     goodProduct.add(product);
             }
             if (goodProduct.isEmpty())
@@ -143,6 +155,7 @@ public class Manager {
     public void pickUp(Product product) {
             products.remove(product);
             store.add(product);
+            pane.getChildren().remove(product);
     }
 
     public boolean well() {
@@ -542,9 +555,10 @@ public class Manager {
         return true;
     }
 
-    public boolean turn(int n ,Task task) {
+//    public boolean turn(int n ,Task task) {
 //        account.logSave("Info" , "turned "+n0+" successfuly");
 //        int n = Integer.parseInt(n0);
+        public boolean turn(int n ) {
         ArrayList<DomesticAnimal> diedDomesticAnimal = new ArrayList<>();
         ArrayList<WildAnimal> diedWildAnimals = new ArrayList<>();
         ArrayList<Product> diedProducts = new ArrayList<>();
@@ -560,6 +574,7 @@ public class Manager {
                 if (time==task.timeOfWildAnimals[j]){
                     WildAnimal wildAnimal = new WildAnimal(task.wildAnimals.get(j).animalType , pane);
                     wildAnimals.add(wildAnimal);
+                    pane.getChildren().add(wildAnimal);
                     account.logSave("Info" , wildAnimal.animalType+" created");
                 }
             }
@@ -581,7 +596,7 @@ public class Manager {
             for (Grass grass : grasses) {
                 hungryAnimals.clear();
                 for (DomesticAnimal domesticAnimal : domesticAnimals) {
-                    if (domesticAnimal.x==grass.centerX&&domesticAnimal.y==grass.centerY&&domesticAnimal.live<=50){
+                    if (domesticAnimal.isCollissionGrass(grass)&&domesticAnimal.live<=50){
                         hungryAnimals.add(domesticAnimal);
                     }
                 }
@@ -592,6 +607,7 @@ public class Manager {
             }
             for (Grass diedGrass : diedGrasses) {
                 grasses.remove(diedGrass);
+                pane.getChildren().remove(diedGrass);
             }
             for (DomesticAnimal domesticAnimal : domesticAnimals) {
                 if (domesticAnimal.live==0)
@@ -600,11 +616,13 @@ public class Manager {
                     domesticAnimal.time =0;
                     Product product = new Product(domesticAnimal.productType , (int)domesticAnimal.x, (int)domesticAnimal.y );
                     products.add(product);
+                    pane.getChildren().add(product);
                     account.logSave("Info" , "new "+product.productType+" created");
                 }
             }
             for (DomesticAnimal animal : diedDomesticAnimal) {
                 domesticAnimals.remove(animal);
+                pane.getChildren().remove(animal);
                 account.logSave("Info" , animal.animalType+" died from hungry");
             }
             //Wildanimals
@@ -614,13 +632,13 @@ public class Manager {
                 wildAnimal.turn();
                 if (!wildAnimal.caged()){
                     for (DomesticAnimal domesticAnimal : domesticAnimals) {
-                        if (domesticAnimal.x==wildAnimal.x&&domesticAnimal.y==wildAnimal.y){
+                        if (domesticAnimal.isCollissionWildAnimals(wildAnimal)){
                             diedDomesticAnimal.add(domesticAnimal);
                             account.logSave("Info" , domesticAnimal.animalType+" disapeared with "+wildAnimal.animalType);
                         }
                     }
                     for (Product product : products) {
-                        if (product.x==wildAnimal.x&&product.y==wildAnimal.y){
+                        if (product.isCollissionWildAnimals(wildAnimal)){
                             diedProducts.add(product);
                             account.logSave("Info" , product.productType+" disapeared with "+wildAnimal.animalType);
                         }
@@ -629,24 +647,29 @@ public class Manager {
                 // TODO: 6/21/2021 logsave
                 if (wildAnimal.time>= wildAnimal.max_time){
                     diedWildAnimals.add(wildAnimal);
+                    // TODO: 7/15/2021 escape from cage
                     account.logSave("Info" , "caged "+wildAnimal.animalType+" escaped with passing time");
                 }
             }
             for (WildAnimal diedWildAnimal : diedWildAnimals) {
                 wildAnimals.remove(diedWildAnimal);
+                pane.getChildren().remove(diedWildAnimal);
+                // TODO: 7/15/2021 escape from cage
             }
             for (DomesticAnimal domesticAnimal : diedDomesticAnimal) {
                 domesticAnimals.remove(domesticAnimal);
+                pane.getChildren().remove(domesticAnimal);
             }
             for (Product diedProduct : diedProducts) {
                 products.remove(diedProduct);
+                pane.getChildren().remove(diedProduct);
             }
             //cats
             diedProducts.clear();
             for (Cat cat : cats) {
                 cat.turn();
                 for (Product product : products) {
-                    if (product.x==cat.x&&product.y==cat.y){
+                    if (product.isCollissionCat(cat)){
                         diedProducts.add(product);
                     }
                 }
@@ -662,7 +685,7 @@ public class Manager {
             for (Hound hound : hounds) {
                 hound.turn();
                 for (WildAnimal wildAnimal : wildAnimals) {
-                    if (wildAnimal.x==hound.x&&wildAnimal.y==hound.y&&!wildAnimal.caged()){
+                    if (hound.isCollissionWildAnimals(wildAnimal)&&!wildAnimal.caged()){
                         account.logSave("Info" , wildAnimal.animalType+" and HOUND died");
                         diedWildAnimals.add(wildAnimal);
                         diedHounds.add(hound);
@@ -671,20 +694,23 @@ public class Manager {
             }
             for (WildAnimal diedWildAnimal : diedWildAnimals) {
                 wildAnimals.remove(diedWildAnimal);
+                pane.getChildren().remove(diedWildAnimal);
             }
             for (Hound diedHound : diedHounds) {
                 hounds.remove(diedHound);
+                pane.getChildren().remove(diedHound);
             }
             //watering system
             wateringSystem.turn();
             if (wateringSystem.well){
                 if (wateringSystem.time>= wateringSystem.max_time){
+                    wellSuccessLabel.setText("");
                     account.logSave("Info" , "well is ready ");
                     wateringSystem.time = 0;
                     wateringSystem.capacity = wateringSystem.MAX_CAPACITY;
                     wateringSystem.well = false;
                 }
-            }
+            }// TODO: 7/15/2021 welling animate 
             //products
             diedProducts.clear();
             for (Product product : products) {
@@ -696,12 +722,15 @@ public class Manager {
             }
             for (Product diedProduct : diedProducts) {
                 products.remove(diedProduct);
+                pane.getChildren().remove(diedProduct);
             }
             //workshops
             for (Factory factory : factories) {
                 factory.turn();
                 if (factory.work&&factory.time>=factory.max_time){
                     account.logSave("Info" , factory.factoryName+ " produce "+factory.productTypeOutput );
+
+                    // TODO: 7/15/2021 factory
                     Random random = new Random();
                     int x = 1+random.nextInt(6);
                     int y = 1+random.nextInt(6);
@@ -1052,4 +1081,60 @@ public class Manager {
     }
 
 
+    public void intersectWildAnimal(int x, int y) {
+        ArrayList<WildAnimal>died = new ArrayList<>();
+        for (WildAnimal wildAnimal : wildAnimals) {
+            if (!wildAnimal.caged()&&wildAnimal.intersect(x , y)){
+                wildAnimal.cage++;
+                account.logSave("Info" , wildAnimal.animalType+" caged successfuly");
+            }else if (wildAnimal.caged()&&wildAnimal.intersect(x , y)){
+                if (store.canAdd(wildAnimal)){
+                    store.add(wildAnimal);
+                    died.add(wildAnimal);
+                    storeSuccess.setText(wildAnimal.animalType+" stored successfully");
+                    account.logSave("Info" , wildAnimal.animalType+" stored successfully");
+                }else {
+                    storeFail.setText("capacity is not enough");
+                    account.logSave("Error" , wildAnimal.animalType+" does not store! capacity is not enough");
+                }
+            }
+        }
+        for (WildAnimal wildAnimal : died) {
+            wildAnimals.remove(wildAnimal);
+            pane.getChildren().remove(wildAnimal);
+        }
+    }
+
+    public void intersectProduct(int x, int y) {
+        ArrayList<Product>died = new ArrayList<>();
+        for (Product product : products) {
+            if (product.intersect(x,y)){
+                if (store.canAdd(product)){
+                    store.add(product);
+                    died.add(product);
+                    storeSuccess.setText(product.productType+" stored successfully");
+                    account.logSave("Info" , product.productType+" stored successfully");
+                }else {
+                    storeFail.setText("capacity is not enough");
+                    account.logSave("Error" , product.productType+" does not store! capacity is not enough");
+                }
+            }
+        }
+        for (Product product : died) {
+            products.remove(product);
+            pane.getChildren().remove(product);
+        }
+    }
+
+    public boolean existIntersect(int x, int y) {
+        for (Product product : products) {
+            if (product.intersect(x,y))
+                return true;
+        }
+        for (WildAnimal wildAnimal : wildAnimals) {
+            if (wildAnimal.intersect(x,y))
+                return true;
+        }
+        return false;
+    }
 }

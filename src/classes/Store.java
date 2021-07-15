@@ -2,8 +2,8 @@ package classes;
 import java.util.ArrayList;
 
 public class Store {
-    ArrayList<Product> productsStoreList;
-    ArrayList<WildAnimal> wildAnimalsStoreList;
+    public ArrayList<Product> productsStoreList;
+    public ArrayList<WildAnimal> wildAnimalsStoreList;
     final int MAX_CAPACITY = 30;
     int capacity;
 
@@ -26,6 +26,11 @@ public class Store {
         return false;
     }
 
+    public boolean canAdd(Product product){
+        if (MAX_CAPACITY - capacity >= product.capacity)
+            return true;
+        return false;
+    }
     public boolean canAdd(WildAnimal wildAnimal){
         if (MAX_CAPACITY - capacity >= wildAnimal.capacity)
             return true;
@@ -48,4 +53,6 @@ public class Store {
         wildAnimalsStoreList.remove(wildAnimal);
         capacity-=wildAnimal.capacity;
     }
+
+
 }

@@ -20,6 +20,12 @@ public class WateringSystem implements Turn{
         }
         return instance;
     }
+    public void plant(){
+        capacity--;
+    }
+    public boolean canPlant(){
+        return capacity > 0 ;
+    }
 
     @Override
     public void turn() {

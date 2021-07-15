@@ -42,8 +42,8 @@ public class Animal extends Rectangle {
 //        theta = 45;
 //        x= 0;
 //        y =0;
-        x =  random.nextInt(371);
-        y =  random.nextInt(286);
+        x =1+  random.nextInt(421);
+        y =1+  random.nextInt(268);
         super.setX(x-20);
         super.setY(y-20);
         super.setWidth(40);
