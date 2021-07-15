@@ -1,18 +1,19 @@
 package classes;
+import javafx.scene.layout.Pane;
+
 import java.util.Random;
 
-public class Cat implements Turn{
+public class Cat extends Animal implements Turn{
     int price;
     int x;
     int y;
-    AnimalType animalType;
     Direction direction;
-    public Cat() {
+    public Cat(Pane pane) {
+        super(1 , pane , AnimalType.CAT);
         this.price = 150;
         Random random = new Random();
         x=1+ random.nextInt(6);
         y = 1+ random.nextInt(6);
-        animalType = AnimalType.CAT;
         direction = Direction.RIGHT.randomDirection();
     }
 

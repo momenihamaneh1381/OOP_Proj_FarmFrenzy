@@ -8,6 +8,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -70,7 +71,10 @@ public class Menu   {
                 fileWriter.append("\n" +levelTxt.getText() );
                 fileWriter.close();
                 Main main = new Main();
-                main.startGame();
+//                main.startGame();
+                main.closeScene();
+                Game game = new Game();
+                game.start(new Stage());
             }
             } catch (Exception e) {
                 labelFail.setVisible(true);

@@ -1,19 +1,20 @@
 package classes;
+import javafx.scene.layout.Pane;
+
 import java.util.Random;
 
-public class Hound implements Turn{
+public class Hound extends Animal implements Turn{
     int price;
     int x;
     int y;
-    AnimalType animalType ;
     Direction direction;
 
-    public Hound() {
+    public Hound(Pane pane) {
+        super(1 , pane , AnimalType.HOUND);
         this.price = 100;
         Random random = new Random();
         x=1+ random.nextInt(6);
         y = 1+ random.nextInt(6);
-        animalType = AnimalType.HOUND;
         direction = Direction.RIGHT.randomDirection();
     }
 

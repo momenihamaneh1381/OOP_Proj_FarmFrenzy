@@ -2,7 +2,7 @@ package classes;
 import java.util.ArrayList;
 
 public class Task {
-    int initialCoins;
+    public int initialCoins;
     int goalCoins;
     int max_time;
     int prize;

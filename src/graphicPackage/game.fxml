@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="638.0" prefWidth="849.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="graphicPackage.Game">
+   <children>
+      <ImageView fitHeight="639.0" fitWidth="851.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../source/groundMain.jpg" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="truckImg" fitHeight="106.0" fitWidth="136.0" layoutX="182.0" layoutY="521.0" onMouseClicked="#truckClick" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../source/truck2.jpg" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="storeImg" fitHeight="150.0" fitWidth="200.0" layoutX="288.0" layoutY="493.0" onMouseClicked="#storeClick" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../source/store2.jpg" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="87.0" fitWidth="136.0" layoutX="527.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../source/coin.jpg" />
+         </image>
+      </ImageView>
+      <Label fx:id="coinLabel" alignment="CENTER" layoutX="527.0" layoutY="50.0" prefHeight="26.0" prefWidth="136.0" text="0" textFill="#e6f204">
+         <font>
+            <Font name="System Bold" size="19.0" />
+         </font>
+      </Label>
+      <Pane fx:id="gamePane" layoutX="211.0" layoutY="223.0" prefHeight="270.0" prefWidth="423.0" />
+      <ImageView fx:id="wellRectImg" fitHeight="94.0" fitWidth="193.0" layoutX="380.0" layoutY="83.0" onMouseClicked="#welling" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../source/well2.jpg" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="buyHenImg" fitHeight="68.0" fitWidth="63.0" layoutX="6.0" layoutY="-2.0" onMouseClicked="#buyHen" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../source/henBrg2.jpg" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="buyTurkeyImg" fitHeight="68.0" fitWidth="60.0" layoutX="69.0" layoutY="1.0" onMouseClicked="#buyTurkey" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../source/turkeyBGr.jpg" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="buyBuffaloImg" fitHeight="64.0" fitWidth="60.0" layoutX="129.0" layoutY="1.0" onMouseClicked="#buyBuffalo" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../source/buffaloBgr1.jpg" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="buyCatImg" fitHeight="68.0" fitWidth="63.0" layoutX="189.0" layoutY="1.0" onMouseClicked="#buyCat" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../source/catBrg1.jpg" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="buyDogimg" fitHeight="68.0" fitWidth="63.0" layoutX="252.0" layoutY="1.0" onMouseClicked="#buyDog" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../source/dogBrg.jpg" />
+         </image>
+      </ImageView>
+      <Label fx:id="lowCoinLabel" alignment="CENTER" layoutX="527.0" layoutY="98.0" prefHeight="28.0" prefWidth="136.0" textFill="#e80303">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

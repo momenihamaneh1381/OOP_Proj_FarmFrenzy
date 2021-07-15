@@ -1,32 +1,40 @@
 package classes;
+import javafx.animation.Transition;
+import javafx.scene.Parent;
+import javafx.scene.layout.Pane;
+import javafx.util.Duration;
+
 import java.util.ArrayList;
 import java.util.Random;
 
-public class DomesticAnimal implements Turn{
+public class DomesticAnimal extends Animal implements Turn{
     int price;
-    int x;
-    int y;
+
     ProductType productType;
     int max_Time;
     int time;
     int live;
     Direction direction;
-    AnimalType animalType;
-    public DomesticAnimal(int price, int maxTime , ProductType productType , AnimalType animalType) {
+
+    public DomesticAnimal(int price, int maxTime , ProductType productType , AnimalType animalType , Pane parent) {
+        super(1 , parent , animalType);
+//        this.setCycleDuration(Duration.millis(1000));
+//        this.setCycleCount(-1);
         this.price = price;
         this.max_Time = maxTime;
         this.live = 100;
         this.productType = productType;
         Random random = new Random();
         direction = Direction.DOWN.randomDirection();
-        x=1+ random.nextInt(6);
-        y = 1+ random.nextInt(6);
+//        super.x=1+ random.nextInt(6);
+//        super.y = 1+ random.nextInt(6);
         time = 0;
-        this.animalType = animalType;
+//        speed = 1;
+//        theta = random.nextInt(360);
     }
 
-    public DomesticAnimal(AnimalType animalType) {
-        this.animalType = animalType;
+    public DomesticAnimal(AnimalType animalType , Pane parent) {
+        super(1 , parent , animalType);
     }
 
 
@@ -105,5 +113,7 @@ public class DomesticAnimal implements Turn{
             }
         }
     }
+
+
 }
 

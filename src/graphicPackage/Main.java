@@ -67,7 +67,19 @@ public  class Main extends Application {
         main.changeScene("signUpForm.fxml" , "Signup");
     }
 
-    public void startGame() {
+    public void startGame() throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("game.fxml"));
+//        Scene menuScene = new Scene(root , 600 ,400);
+//        Scene menuScene = new Scene(root , 1366 ,700);
+        Scene menuScene = new Scene(root , 851 ,639);
+//        stage.setResizable(false);
+        stage.setScene(menuScene);
+        stage.setTitle("Game");
+        Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
+        stage.setX((primScreenBounds.getWidth() - stage.getWidth()) / 2);
+        stage.setY((primScreenBounds.getHeight() - stage.getHeight()) / 2);
+//        stage.setFullScreen(true);
+        stage.setResizable(true);
         // TODO: 7/12/2021  
     }
 }

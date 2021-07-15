@@ -6,6 +6,10 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class Account {
+    public int getCoins() {
+        return coins;
+    }
+
     public Account() {
     }
 
@@ -47,5 +51,9 @@ public class Account {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void setCoins(int coins) {
+        this.coins = coins;
     }
 }

@@ -1,63 +1,61 @@
 package classes;
 
+import javafx.scene.layout.Pane;
+
 import java.util.Random;
 
-public class WildAnimal implements Turn{
-    int x;
-    int y;
+public class WildAnimal extends Animal implements Turn{
     int max_cage;
     int cage;
-    int speed;
     int capacity;
     int price;
     int max_time;
     int time;
     Direction direction;
-    AnimalType animalType;
 
-    public WildAnimal(int max_cage, int speed,int price , AnimalType animalType) {
+
+    public WildAnimal(int max_cage, int speed,int price , AnimalType animalType , Pane parent) {
+        super(speed ,parent , animalType);
         this.max_cage = max_cage;
-        this.speed = speed;
         this.price = price;
         capacity = 15;
         max_time =5;
         cage =0;
         time = 0;
         Random random  = new Random();
-        x = 1+random.nextInt(6);
-        y = 1+random.nextInt(6);
+        super.x = 1+random.nextInt(6);
+        super.y = 1+random.nextInt(6);
         direction = Direction.DOWN.randomDirection();
-        this.animalType = animalType;
     }
 
-    public WildAnimal(AnimalType animalType) {
-        this.animalType = animalType;
-        capacity = 15;
-        max_time =5;
-        cage =0;
-        time = 0;
-        Random random  = new Random();
-        x = 1+random.nextInt(6);
-        y = 1+random.nextInt(6);
-        direction = Direction.DOWN.randomDirection();
-        this.animalType = animalType;
+    public WildAnimal(AnimalType animalType ,Pane parent) {
+        super(0 , parent , animalType);
         switch (animalType){
             case BEAR:
-                speed =1;
+                super.speed=1;
                 price =400;
                 max_cage =4;
                 break;
             case LION:
-                speed =1;
+                super.speed=1;
                 price = 300;
                 max_cage =3;
                 break;
             case TIGER:
-                speed =2;
+                super.speed=2;
                 price = 500;
                 max_cage =4;
                 break;
         }
+        this.capacity = 15;
+        max_time =5;
+        cage =0;
+        time = 0;
+        Random random  = new Random();
+//        super.x = 1+random.nextInt(6);
+//        super.y = 1+random.nextInt(6);
+        direction = Direction.DOWN.randomDirection();
+        this.animalType = animalType;
     }
 
     public boolean caged(){

@@ -3,7 +3,7 @@ import java.util.ArrayList;
 
 public class Missions {
     int levels;
-    Task[] tasks ;
+    public Task[] tasks ;
 
     public Missions(int levels) {
         this.levels = levels;
@@ -42,4 +42,5 @@ public class Missions {
 
 
     }
+
 }

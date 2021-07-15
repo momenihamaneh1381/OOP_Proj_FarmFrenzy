@@ -1,5 +1,12 @@
 package classes;
 
+import com.google.gson.Gson;
+import graphicPackage.Game;
+import javafx.scene.layout.Pane;
+
+import java.io.Reader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -9,25 +16,25 @@ public class Manager {
     Store store ;
     Account account;
     Truck truck;
-    ArrayList<DomesticAnimal> domesticAnimals;
-    ArrayList<Cat> cats;
-    ArrayList<Hound> hounds;
-    ArrayList<WildAnimal> wildAnimals;
-    ArrayList<Product> products;
-    ArrayList<Factory> factories;
-    ArrayList<Grass> grasses;
+    public ArrayList<DomesticAnimal> domesticAnimals;
+    public ArrayList<Cat> cats;
+    public ArrayList<Hound> hounds;
+    public ArrayList<WildAnimal> wildAnimals;
+    public ArrayList<Product> products;
+    public ArrayList<Factory> factories;
+    public ArrayList<Grass> grasses;
     WateringSystem wateringSystem;
     int maxProduct;
     int maxAnimal;
     int maxCoin;
-
-    public Manager(Account account) {
+    Pane pane;
+    public Manager(Account account , Pane pane ) {
         time = 0;
          maxProduct=0;
          maxAnimal=0;
          maxCoin=0;
         this.account = account;
-        truck = new Truck();
+        truck = Truck.getInstance();
         domesticAnimals = new ArrayList<>();
         wildAnimals = new ArrayList<>();
         products = new ArrayList<>();
@@ -37,41 +44,70 @@ public class Manager {
         store = Store.getInstanceStore();
         grasses = new ArrayList<>();
         wateringSystem = WateringSystem.getInstanceWateringSystem();
+        this.pane = pane;
+    }
+
+    public void missionRead(Missions missions){
+//        FileOperator fileOperator = new FileOperator();
+//        String json =  fileOperator.read("missions.json");
+//        Gson gson = new Gson();
+//        missions = new Missions(5);
+//        // convert JSON string to Mission object
+//        missions = gson.fromJson(json, Missions.class);
+        try {
+            // create Gson instance
+            Gson gson = new Gson();
+
+            // create a reader
+            Reader reader = Files.newBufferedReader(Paths.get("missions.json"));
+
+            // convert JSON string to Book object
+            Missions mission = gson.fromJson(reader, Missions.class);
+            missions = mission;
+            // print book
+
+            // close reader
+            System.out.println(missions.levels);
+            reader.close();
+
+        } catch (Exception ex) {
+            System.out.println(1);
+        }
     }
 
     public boolean buy(String animalName) {
         if (animalName.equalsIgnoreCase("hen")){
             if (account.coins>=100) {
-                Hen hen = new Hen();
-                domesticAnimals.add(hen);
+//                Hen hen = new Hen(pane);
+//                domesticAnimals.add(hen);
                 account.coins-=100;
                 return true;
                  }return false;
         }else if (animalName.equalsIgnoreCase("turkey")){
                 if (account.coins>=200){
-                    Turkey turkey = new Turkey();
-                    domesticAnimals.add(turkey);
+//                    Turkey turkey = new Turkey(pane);
+//                    domesticAnimals.add(turkey);
                     account.coins-=200;
                     return true;
                 }return false;
         }else if (animalName.equalsIgnoreCase("buffalo")){
             if (account.coins>=400) {
-                Buffalo buffalo = new Buffalo();
-                domesticAnimals.add(buffalo);
+//                Buffalo buffalo = new Buffalo(pane);
+//                domesticAnimals.add(buffalo);
                 account.coins-=400;
                 return true;
             }return false;
         }else if (animalName.equalsIgnoreCase("cat")){
             if (account.coins>=150) {
-                Cat cat = new Cat();
-                cats.add(cat);
+//                Cat cat = new Cat(pane);
+//                cats.add(cat);
                 account.coins-=150;
                 return true;
             }return false;
         }else if (animalName.equalsIgnoreCase("hound")){
             if (account.coins>=100) {
-                Hound hound = new Hound();
-                hounds.add(hound);
+//                Hound hound = new Hound(pane);
+//                hounds.add(hound);
                 account.coins-=100;
                 return true;
             }return false;
@@ -506,9 +542,9 @@ public class Manager {
         return true;
     }
 
-    public boolean turn(String n0 ,Task task) {
-        account.logSave("Info" , "turned "+n0+" successfuly");
-        int n = Integer.parseInt(n0);
+    public boolean turn(int n ,Task task) {
+//        account.logSave("Info" , "turned "+n0+" successfuly");
+//        int n = Integer.parseInt(n0);
         ArrayList<DomesticAnimal> diedDomesticAnimal = new ArrayList<>();
         ArrayList<WildAnimal> diedWildAnimals = new ArrayList<>();
         ArrayList<Product> diedProducts = new ArrayList<>();
@@ -522,7 +558,7 @@ public class Manager {
             time++;
             for (int j = 0; j < task.wildAnimals.size(); j++) {
                 if (time==task.timeOfWildAnimals[j]){
-                    WildAnimal wildAnimal = new WildAnimal(task.wildAnimals.get(j).animalType);
+                    WildAnimal wildAnimal = new WildAnimal(task.wildAnimals.get(j).animalType , pane);
                     wildAnimals.add(wildAnimal);
                     account.logSave("Info" , wildAnimal.animalType+" created");
                 }
@@ -545,7 +581,7 @@ public class Manager {
             for (Grass grass : grasses) {
                 hungryAnimals.clear();
                 for (DomesticAnimal domesticAnimal : domesticAnimals) {
-                    if (domesticAnimal.x==grass.x&&domesticAnimal.y==grass.y&&domesticAnimal.live<=50){
+                    if (domesticAnimal.x==grass.centerX&&domesticAnimal.y==grass.centerY&&domesticAnimal.live<=50){
                         hungryAnimals.add(domesticAnimal);
                     }
                 }
@@ -562,7 +598,7 @@ public class Manager {
                     diedDomesticAnimal.add(domesticAnimal);
                 if (domesticAnimal.time>= domesticAnimal.max_Time){
                     domesticAnimal.time =0;
-                    Product product = new Product(domesticAnimal.productType , domesticAnimal.x, domesticAnimal.y );
+                    Product product = new Product(domesticAnimal.productType , (int)domesticAnimal.x, (int)domesticAnimal.y );
                     products.add(product);
                     account.logSave("Info" , "new "+product.productType+" created");
                 }

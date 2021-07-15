@@ -2,6 +2,8 @@ package classes;
 import java.util.ArrayList;
 
 public class Truck implements Turn{
+    private static Truck instance;
+
     final int MAX_CAPACITY = 15;
     final int MAX_TIME = 10;
     int time;
@@ -11,7 +13,14 @@ public class Truck implements Turn{
     int capacity;
 
     // TODO: 6/18/2021 domesticAnimals beacase have not any capacity
-    public Truck() {
+
+    public static Truck getInstance(){
+        if (instance==null)
+            instance = new Truck();
+        return instance;
+    }
+
+    private Truck() {
         time=0;
         isGo=false;
         listOfProducts = new ArrayList<>();
