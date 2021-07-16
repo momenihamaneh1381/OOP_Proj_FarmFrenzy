@@ -1,8 +1,7 @@
 package classes;
 
-public class Incubator  {
-    // TODO: 7/13/2021  
-//    public Incubator(int price, int max_time, FactoryType factoryType, ProductType productTypeInput, ProductType productTypeOutput) {
-//        super(price, max_time, factoryType, productTypeInput, productTypeOutput);
-//    }
+public class Incubator extends Factory{
+    public Incubator(  ) {
+        super(0, 6, FactoryType.COMPLICATED, ProductType.EGG, ProductType.HEN , FactoryName.INCUBATOR);
+    }
 }

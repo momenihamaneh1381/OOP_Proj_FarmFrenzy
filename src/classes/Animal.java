@@ -14,6 +14,39 @@ public class Animal extends Rectangle {
     int theta;
     double x ;
     double y;
+
+    public String getAnimalType() {
+        String n = "";
+        switch (animalType){
+            case CAT :
+                n="cat";
+                break;
+            case HEN:
+                n="hen";
+                break;
+            case HOUND:
+                n="hound";
+                break;
+            case TIGER :
+                n="tiger";
+                break;
+            case TURKEY :
+                n="turkey";
+                break;
+            case BEAR:
+                n="bear";
+                break;
+            case BUFFALO :
+                n="buffalo";
+                break;
+            case LION :
+                n="lion";
+                break;
+
+        }
+        return n;
+    }
+
     AnimalType animalType;
 
     public String getUrl() {
@@ -42,8 +75,8 @@ public class Animal extends Rectangle {
 //        theta = 45;
 //        x= 0;
 //        y =0;
-        x =1+  random.nextInt(421);
-        y =1+  random.nextInt(268);
+        x =21+  random.nextInt(400);
+        y =21+  random.nextInt(247);
         super.setX(x-20);
         super.setY(y-20);
         super.setWidth(40);

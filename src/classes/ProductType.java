@@ -8,5 +8,6 @@ public enum ProductType {
     POCKET_MILK,
     BREAD,
     CLOTH,
-    ICE_CREAM
+    ICE_CREAM,
+    HEN
 }

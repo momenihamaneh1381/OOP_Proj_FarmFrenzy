@@ -6,4 +6,5 @@ public enum FactoryName {
     POCKET_MILK_FACTORY,
     SEWING_FACTORY,
     WEAVING_FACTORY,
+    INCUBATOR
 }

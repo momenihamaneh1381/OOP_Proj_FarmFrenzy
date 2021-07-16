@@ -1,6 +1,6 @@
 package classes;
 public class SewingFactory extends Factory{
     public SewingFactory() {
-        super(400, 6, FactoryType.COMPLICATED, ProductType.FABRIC, ProductType.CLOTH);
+        super(400, 6, FactoryType.COMPLICATED, ProductType.FABRIC, ProductType.CLOTH , FactoryName.SEWING_FACTORY);
     }
 }

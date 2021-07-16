@@ -30,12 +30,33 @@ public class Manager {
     int maxCoin;
     Pane pane;
     Task task;
-    Label wellSuccessLabel , storeSuccess , storeFail;
-    public Manager(Account account , Pane pane  , Label wellSuccessLabel , Label storeSuccess  , Label storeFail) {
+    Label wellSuccessLabel , storeSuccess , storeFail  , eggPowderPlantLabel , weavingLabel , pocketMilkLabel , bakeryLabel ,  sewingLabel , icecreamLabel , incubatorLabel;
+    public EggPowderPlant eggPowderPlant;
+    public WeavingFactory weavingFactory ;
+    public PocketMilkFactory pocketMilkFactory;
+    public Bakery bakery;
+    public SewingFactory sewingFactory;
+    public IcecreamFactory icecreamFactory;
+    public Incubator incubator;
+    public Manager(Account account , Pane pane  , Label wellSuccessLabel , Label storeSuccess  , Label storeFail , Label eggPowderPlantLabel ,Label weavingLabel ,Label pocketMilkLabel ,Label bakeryLabel ,Label  sewingLabel ,Label icecreamLabel , Label incubatorLabel) {
         time = 0;
+        this.incubatorLabel = incubatorLabel;
+        this.eggPowderPlantLabel = eggPowderPlantLabel;
+        this.weavingLabel = weavingLabel;
+        this.pocketMilkLabel = pocketMilkLabel;
+        this.bakeryLabel = bakeryLabel;
+        this.sewingLabel = sewingLabel;
+        this.icecreamLabel = icecreamLabel;
         this.storeSuccess = storeSuccess;
         this.storeFail = storeFail;
         this.wellSuccessLabel = wellSuccessLabel;
+        eggPowderPlant = new EggPowderPlant();
+        weavingFactory = new WeavingFactory();
+        pocketMilkFactory = new PocketMilkFactory();
+        bakery = new Bakery();
+        sewingFactory = new SewingFactory();
+        icecreamFactory = new IcecreamFactory();
+        incubator = new Incubator();
          maxProduct=0;
          maxAnimal=0;
          maxCoin=0;
@@ -45,6 +66,7 @@ public class Manager {
         wildAnimals = new ArrayList<>();
         products = new ArrayList<>();
         factories = new ArrayList<>();
+        factories.add(incubator);
         cats = new ArrayList<>();
         hounds = new ArrayList<>();
         store = Store.getInstanceStore();
@@ -729,22 +751,53 @@ public class Manager {
                 factory.turn();
                 if (factory.work&&factory.time>=factory.max_time){
                     account.logSave("Info" , factory.factoryName+ " produce "+factory.productTypeOutput );
-
+                    switch (factory.factoryName){
+                        case EGG_POWDER_PLANT :
+                            eggPowderPlantLabel.setText("");
+                            break;
+                        case WEAVING_FACTORY:
+                            weavingLabel.setText("");
+                            break;
+                        case POCKET_MILK_FACTORY:
+                            pocketMilkLabel.setText("");
+                            break;
+                        case BAKERY :
+                            bakeryLabel.setText("");
+                            break;
+                        case SEWING_FACTORY :
+                            sewingLabel.setText("");
+                            break;
+                        case ICECREAM_FACTORY :
+                            icecreamLabel.setText("");
+                            break;
+                        case INCUBATOR:
+                            incubatorLabel.setText("");
+                            factory.time = 0;
+                            factory.work = false;
+                            Hen hen = new Hen(pane);
+                            pane.getChildren().add(hen);
+                            domesticAnimals.add(hen);
+                            break;
+                    }
                     // TODO: 7/15/2021 factory
-                    Random random = new Random();
-                    int x = 1+random.nextInt(6);
-                    int y = 1+random.nextInt(6);
-                    factory.time = 0;
-                    factory.work =false;
-                    Product product = new Product(factory.productTypeOutput , x ,y);
-                    products.add(product);
-                    if (factory.level==2&&factory.numOfProduct==2){
-                        factory.numOfProduct=1;
-                        x = 1+random.nextInt(6);
-                        y = 1+random.nextInt(6);
-                        Product product1 = new Product(factory.productTypeOutput , x ,y);
-                        products.add(product1);
-                        account.logSave("Info" , factory.factoryName+ " produce "+factory.productTypeOutput +" , level = 2");
+                    if (factory.factoryName!=FactoryName.INCUBATOR) {
+                        Random random = new Random();
+                        int x = 1 + random.nextInt(421);
+                        int y = 1 + random.nextInt(268);
+                        factory.time = 0;
+                        factory.work = false;
+                        Product product = new Product(factory.productTypeOutput, x, y);
+                        pane.getChildren().add(product);
+                        products.add(product);
+                        if (factory.level == 2 && factory.numOfProduct == 2) {
+                            factory.numOfProduct = 1;
+                            x = 1 + random.nextInt(421);
+                            y = 1 + random.nextInt(268);
+                            Product product1 = new Product(factory.productTypeOutput, x, y);
+                            products.add(product1);
+                            pane.getChildren().add(product1);
+                            account.logSave("Info", factory.factoryName + " produce " + factory.productTypeOutput + " , level = 2");
+                        }
                     }
                 }
             }
@@ -902,6 +955,20 @@ public class Manager {
                 }
             }
             return false;
+        }else if (workshopName.equalsIgnoreCase("incubator")){
+            for (Product product : store.productsStoreList) {
+                if (product.productType == ProductType.EGG){
+                    goodProduct.add(product);
+                }
+            }
+            if (goodProduct.isEmpty()){
+                return false;
+            }
+            if (!incubator.work){
+                startWork(incubator, goodProduct.get(0));
+                return true;
+            }
+            return false;
         }else if (workshopName.equalsIgnoreCase("weavingFactory")){
             for (Product product : store.productsStoreList) {
                 if (product.productType == ProductType.WING){
@@ -979,6 +1046,7 @@ public class Manager {
             return false;
     }
     public void startWork(Factory factory , Product product) {
+        account.logSave("Info" , factory.factoryName+" start work with 1 "+product.productType);
         store.remove(product);
         factory.work = true;
     }
@@ -988,6 +1056,7 @@ public class Manager {
         store.remove(product2);
         factory.numOfProduct=2;
         factory.work = true;
+        account.logSave("Info" , factory.factoryName+" start work with 2 "+product1.productType);
     }
     public int numOfProduct(ProductType productType){
         int n=0;
@@ -1134,6 +1203,14 @@ public class Manager {
         for (WildAnimal wildAnimal : wildAnimals) {
             if (wildAnimal.intersect(x,y))
                 return true;
+        }
+        return false;
+    }
+
+    public boolean canBuild(int price) {
+        if (account.coins>=price){
+            account.coins-=price;
+            return true;
         }
         return false;
     }
