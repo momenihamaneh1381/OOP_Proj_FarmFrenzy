@@ -56,4 +56,8 @@ public class Account {
     public void setCoins(int coins) {
         this.coins = coins;
     }
+
+    public void setCompleteLevels(int completeLevels) {
+        this.completeLevels = completeLevels;
+    }
 }

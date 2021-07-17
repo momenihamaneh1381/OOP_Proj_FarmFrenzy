@@ -7,10 +7,10 @@ public class Truck implements Turn{
     final int MAX_CAPACITY = 15;
     final int MAX_TIME = 10;
     int time;
-    boolean isGo;
+    public boolean isGo;
     ArrayList<Product> listOfProducts;
     ArrayList<WildAnimal>listOfWildAnimals;
-    int capacity;
+    public int capacity;
 
     // TODO: 6/18/2021 domesticAnimals beacase have not any capacity
 
@@ -71,5 +71,29 @@ public class Truck implements Turn{
     public void clear() {
         listOfWildAnimals.clear();
         listOfProducts.clear();
+    }
+
+    public int numProduct(ProductType productType){
+        int n = 0;
+        for (Product product : listOfProducts) {
+            if (product.productType==productType)
+                n++;
+        }
+        return n;
+    }
+    public int numProduct(AnimalType animalType){
+        int n = 0;
+        for (WildAnimal wildAnimal : listOfWildAnimals) {
+            if (wildAnimal.animalType==animalType)
+                n++;
+        }
+        return n;
+    }
+    public WildAnimal getWild(AnimalType animalType){
+        for (WildAnimal wildAnimal : listOfWildAnimals) {
+            if (wildAnimal.animalType==animalType)
+                return wildAnimal;
+        }
+        return null;
     }
 }

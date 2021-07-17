@@ -5,7 +5,7 @@ public class Factory implements Turn{
     int time;
     int level;
     int numOfProduct;
-    boolean work;
+    public boolean work;
 
     public int getPrice() {
         return price;

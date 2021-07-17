@@ -3,20 +3,19 @@ package classes;
 import com.google.gson.Gson;
 import graphicPackage.Game;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
-import java.io.Reader;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Random;
 
 
 public class Manager {
-    int time;
+    public int time;
     Store store ;
     Account account;
     Truck truck;
+
     public ArrayList<DomesticAnimal> domesticAnimals;
     public ArrayList<Cat> cats;
     public ArrayList<Hound> hounds;
@@ -29,8 +28,11 @@ public class Manager {
     int maxAnimal;
     int maxCoin;
     Pane pane;
-    Task task;
-    Label wellSuccessLabel , storeSuccess , storeFail  , eggPowderPlantLabel , weavingLabel , pocketMilkLabel , bakeryLabel ,  sewingLabel , icecreamLabel , incubatorLabel;
+    public int goalDomesticNum=0;
+    public int goalProductNum=0;
+    public Step step;
+    Label wellSuccessLabel , storeSuccess , storeFail  , eggPowderPlantLabel, weavingLabel , pocketMilkLabel
+            , bakeryLabel ,  sewingLabel , icecreamLabel , incubatorLabel , coinLabel ,  timeLabel;
     public EggPowderPlant eggPowderPlant;
     public WeavingFactory weavingFactory ;
     public PocketMilkFactory pocketMilkFactory;
@@ -38,8 +40,15 @@ public class Manager {
     public SewingFactory sewingFactory;
     public IcecreamFactory icecreamFactory;
     public Incubator incubator;
-    public Manager(Account account , Pane pane  , Label wellSuccessLabel , Label storeSuccess  , Label storeFail , Label eggPowderPlantLabel ,Label weavingLabel ,Label pocketMilkLabel ,Label bakeryLabel ,Label  sewingLabel ,Label icecreamLabel , Label incubatorLabel) {
+    ImageView truckImg;
+    public Manager(Account account , Pane pane  , Label wellSuccessLabel , Label storeSuccess  ,
+                   Label storeFail , Label eggPowderPlantLabel ,Label weavingLabel ,Label pocketMilkLabel ,
+                   Label bakeryLabel ,Label  sewingLabel ,Label icecreamLabel , Label incubatorLabel ,
+                   ImageView truckImg , Label coinLabel ,Label timeLabel) {
         time = 0;
+        this.timeLabel = timeLabel;
+        this.coinLabel = coinLabel;
+        this.truckImg = truckImg;
         this.incubatorLabel = incubatorLabel;
         this.eggPowderPlantLabel = eggPowderPlantLabel;
         this.weavingLabel = weavingLabel;
@@ -75,39 +84,46 @@ public class Manager {
         this.pane = pane;
 
         // TODO: 7/15/2021
-        int [] a = {1};
-        task = new Task(100 , a , 3000 , 50 , 200 );
-        task.wildAnimals.add(new Tiger(pane));
-        // TODO: 7/15/2021 task & missions
+//        int [] a = {1};
+//        tasks = new Tasks(100 , a , 3000 , 50 , 200 );
+//        tasks.wildAnimals.add(new Tiger(pane));
+        // TODO: 7/15/2021 tasks & missions
+        step = new Step();
+        stepRead();
     }
 
-    public void missionRead(Missions missions){
-//        FileOperator fileOperator = new FileOperator();
-//        String json =  fileOperator.read("missions.json");
-//        Gson gson = new Gson();
-//        missions = new Missions(5);
-//        // convert JSON string to Mission object
-//        missions = gson.fromJson(json, Missions.class);
-        try {
-            // create Gson instance
-            Gson gson = new Gson();
-
-            // create a reader
-            Reader reader = Files.newBufferedReader(Paths.get("missions.json"));
-
-            // convert JSON string to Book object
-            Missions mission = gson.fromJson(reader, Missions.class);
-            missions = mission;
-            // print book
-
-            // close reader
-            System.out.println(missions.levels);
-            reader.close();
-
-        } catch (Exception ex) {
-            System.out.println(1);
-        }
+    private void stepRead(){
+        FileOperator fileOperator = new FileOperator();
+        String userListText = fileOperator.read("step"+ Game.level +".json");
+        step = new Gson().fromJson(userListText, Step.class);
     }
+//    public void missionRead(Missions missions){
+////        FileOperator fileOperator = new FileOperator();
+////        String json =  fileOperator.read("missions.json");
+////        Gson gson = new Gson();
+////        missions = new Missions(5);
+////        // convert JSON string to Mission object
+////        missions = gson.fromJson(json, Missions.class);
+//        try {
+//            // create Gson instance
+//            Gson gson = new Gson();
+//
+//            // create a reader
+//            Reader reader = Files.newBufferedReader(Paths.get("missions.json"));
+//
+//            // convert JSON string to Book object
+//            Missions mission = gson.fromJson(reader, Missions.class);
+//            missions = mission;
+//            // print book
+//
+//            // close reader
+//            System.out.println(missions.levels);
+//            reader.close();
+//
+//        } catch (Exception ex) {
+//            System.out.println(1);
+//        }
+//    }
 
     public boolean buy(String animalName) {
         if (animalName.equalsIgnoreCase("hen")){
@@ -115,6 +131,8 @@ public class Manager {
 //                Hen hen = new Hen(pane);
 //                domesticAnimals.add(hen);
                 account.coins-=100;
+                if (step.goalDomesticAnimalName.length()!=0&&step.goalDomesticAnimalName.equalsIgnoreCase(animalName))
+                    goalDomesticNum++;
                 return true;
                  }return false;
         }else if (animalName.equalsIgnoreCase("turkey")){
@@ -122,6 +140,8 @@ public class Manager {
 //                    Turkey turkey = new Turkey(pane);
 //                    domesticAnimals.add(turkey);
                     account.coins-=200;
+                    if (step.goalDomesticAnimalName.length()!=0&&step.goalDomesticAnimalName.equalsIgnoreCase(animalName))
+                        goalDomesticNum++;
                     return true;
                 }return false;
         }else if (animalName.equalsIgnoreCase("buffalo")){
@@ -129,6 +149,8 @@ public class Manager {
 //                Buffalo buffalo = new Buffalo(pane);
 //                domesticAnimals.add(buffalo);
                 account.coins-=400;
+                if (step.goalDomesticAnimalName.length()!=0&&step.goalDomesticAnimalName.equalsIgnoreCase(animalName))
+                    goalDomesticNum++;
                 return true;
             }return false;
         }else if (animalName.equalsIgnoreCase("cat")){
@@ -136,6 +158,8 @@ public class Manager {
 //                Cat cat = new Cat(pane);
 //                cats.add(cat);
                 account.coins-=150;
+                if (step.goalDomesticAnimalName.length()!=0&&step.goalDomesticAnimalName.equalsIgnoreCase(animalName))
+                    goalDomesticNum++;
                 return true;
             }return false;
         }else if (animalName.equalsIgnoreCase("hound")){
@@ -143,6 +167,8 @@ public class Manager {
 //                Hound hound = new Hound(pane);
 //                hounds.add(hound);
                 account.coins-=100;
+                if (step.goalDomesticAnimalName.length()!=0&&step.goalDomesticAnimalName.equalsIgnoreCase(animalName))
+                    goalDomesticNum++;
                 return true;
             }return false;
         }return false;
@@ -176,6 +202,8 @@ public class Manager {
 
     public void pickUp(Product product) {
             products.remove(product);
+            if (step.goalProductName.length()!=0&&step.goalProductName.equalsIgnoreCase(String.valueOf(product.productType)))
+                goalProductNum++;
             store.add(product);
             pane.getChildren().remove(product);
     }
@@ -288,12 +316,30 @@ public class Manager {
     }
 
     public boolean truckLoad(String itemName) {
-        if (truck.isGo)
-            return false;
-        if (itemName.equalsIgnoreCase("wildAnimal")){
+//        if (truck.isGo)
+//            return false;
+        if (itemName.equalsIgnoreCase("lion")){
             if (truck.MAX_CAPACITY - truck.capacity >=15){
-                if (!store.wildAnimalsStoreList.isEmpty()){
-                    WildAnimal wild = store.wildAnimalsStoreList.get(0);
+                if (store.numProduct(AnimalType.LION)!=0){
+                    WildAnimal wild = store.getWild(AnimalType.LION);
+                    store.remove(wild);
+                    truck.add(wild);
+                    return true;
+                }return false;
+            }return false;
+        }else if (itemName.equalsIgnoreCase("tiger")){
+            if (truck.MAX_CAPACITY - truck.capacity >=15){
+                if (store.numProduct(AnimalType.TIGER)!=0){
+                    WildAnimal wild = store.getWild(AnimalType.TIGER);
+                    store.remove(wild);
+                    truck.add(wild);
+                    return true;
+                }return false;
+            }return false;
+        }else if (itemName.equalsIgnoreCase("bear")){
+            if (truck.MAX_CAPACITY - truck.capacity >=15){
+                if (store.numProduct(AnimalType.BEAR)!=0){
+                    WildAnimal wild = store.getWild(AnimalType.BEAR);
                     store.remove(wild);
                     truck.add(wild);
                     return true;
@@ -429,12 +475,30 @@ public class Manager {
     }
 
     public boolean truckUnLoad(String itemName) {
-        if (truck.isGo)
-            return false;
-        if (itemName.equalsIgnoreCase("wildAnimal")){
+//        if (truck.isGo)
+//            return false;
+        if (itemName.equalsIgnoreCase("lion")){
             if (store.MAX_CAPACITY - store.capacity >=15){
-                if (!truck.listOfWildAnimals.isEmpty()){
-                    WildAnimal wild = truck.listOfWildAnimals.get(0);
+                if (truck.numProduct(AnimalType.LION)!=0){
+                    WildAnimal wild = truck.getWild(AnimalType.LION);
+                    store.add(wild);
+                    truck.remove(wild);
+                    return true;
+                }return false;
+            }return false;
+        }else if (itemName.equalsIgnoreCase("tiger")){
+            if (store.MAX_CAPACITY - store.capacity >=15){
+                if (truck.numProduct(AnimalType.TIGER)!=0){
+                    WildAnimal wild = truck.getWild(AnimalType.TIGER);
+                    store.add(wild);
+                    truck.remove(wild);
+                    return true;
+                }return false;
+            }return false;
+        }else if (itemName.equalsIgnoreCase("Bear")){
+            if (store.MAX_CAPACITY - store.capacity >=15){
+                if (truck.numProduct(AnimalType.BEAR)!=0){
+                    WildAnimal wild = truck.getWild(AnimalType.BEAR);
                     store.add(wild);
                     truck.remove(wild);
                     return true;
@@ -569,6 +633,25 @@ public class Manager {
         }return false;
     }
 
+    public AnimalType getanimalType(String animalName){
+        if (animalName.equalsIgnoreCase("bear"))
+            return AnimalType.BEAR;
+        else if (animalName.equalsIgnoreCase("tiger"))
+            return AnimalType.TIGER;
+        else if (animalName.equalsIgnoreCase("lion"))
+            return AnimalType.LION;
+        else if (animalName.equalsIgnoreCase("hen"))
+            return AnimalType.HEN;
+        else if (animalName.equalsIgnoreCase("turkey"))
+            return AnimalType.TURKEY;
+        else if (animalName.equalsIgnoreCase("buffalo"))
+            return AnimalType.BUFFALO;
+        else if (animalName.equalsIgnoreCase("cat"))
+            return AnimalType.CAT;
+        else if (animalName.equalsIgnoreCase("hound"))
+            return AnimalType.HOUND;
+        return null;
+    }
     public boolean truckGo() {
         if (truck.capacity==0||truck.isGo)
             return false;
@@ -577,7 +660,7 @@ public class Manager {
         return true;
     }
 
-//    public boolean turn(int n ,Task task) {
+//    public boolean turn(int n ,Tasks tasks) {
 //        account.logSave("Info" , "turned "+n0+" successfuly");
 //        int n = Integer.parseInt(n0);
         public boolean turn(int n ) {
@@ -587,236 +670,240 @@ public class Manager {
         ArrayList<Hound> diedHounds = new ArrayList<>();
         ArrayList<DomesticAnimal> hungryAnimals = new ArrayList<>();
         ArrayList<Grass> diedGrasses = new ArrayList<>();
-
-        // TODO: 6/17/2021 locations check copy paste
-        for (int i = 0; i < n; i++) {
-            //create wildAnimal
-            time++;
-            for (int j = 0; j < task.wildAnimals.size(); j++) {
-                if (time==task.timeOfWildAnimals[j]){
-                    WildAnimal wildAnimal = new WildAnimal(task.wildAnimals.get(j).animalType , pane);
-                    wildAnimals.add(wildAnimal);
-                    pane.getChildren().add(wildAnimal);
-                    account.logSave("Info" , wildAnimal.animalType+" created");
+        if (!endGame()) {
+            for (int i = 0; i < n; i++) {
+                //create wildAnimal
+                time++;
+                timeLabel.setText(String.valueOf(time));
+                for (int j = 0; j < step.wildNames.length; j++) {
+                    if (time == step.wildNum[j]) {
+                        WildAnimal wildAnimal = new WildAnimal(getanimalType(step.wildNames[j]), pane);
+                        wildAnimals.add(wildAnimal);
+                        pane.getChildren().add(wildAnimal);
+                        account.logSave("Info", wildAnimal.animalType + " created");
+                    }
                 }
-            }
 
-            diedDomesticAnimal.clear();
-            diedWildAnimals.clear();
-            diedProducts.clear();
-            diedHounds.clear();
-            hungryAnimals.clear();
-            diedGrasses.clear();
-
-            //domesticAnimals
-            for (DomesticAnimal domesticAnimal : domesticAnimals) {
-                domesticAnimal.turn();
-            }
-            //grasses
-            diedGrasses.clear();
-            hungryAnimals.clear();
-            for (Grass grass : grasses) {
+                diedDomesticAnimal.clear();
+                diedWildAnimals.clear();
+                diedProducts.clear();
+                diedHounds.clear();
                 hungryAnimals.clear();
+                diedGrasses.clear();
+
+                //domesticAnimals
                 for (DomesticAnimal domesticAnimal : domesticAnimals) {
-                    if (domesticAnimal.isCollissionGrass(grass)&&domesticAnimal.live<=50){
-                        hungryAnimals.add(domesticAnimal);
-                    }
+                    domesticAnimal.turn();
                 }
-                if (!hungryAnimals.isEmpty()){
-                minHungryAnimals(hungryAnimals);
-                diedGrasses.add(grass);
-                }
-            }
-            for (Grass diedGrass : diedGrasses) {
-                grasses.remove(diedGrass);
-                pane.getChildren().remove(diedGrass);
-            }
-            for (DomesticAnimal domesticAnimal : domesticAnimals) {
-                if (domesticAnimal.live==0)
-                    diedDomesticAnimal.add(domesticAnimal);
-                if (domesticAnimal.time>= domesticAnimal.max_Time){
-                    domesticAnimal.time =0;
-                    Product product = new Product(domesticAnimal.productType , (int)domesticAnimal.x, (int)domesticAnimal.y );
-                    products.add(product);
-                    pane.getChildren().add(product);
-                    account.logSave("Info" , "new "+product.productType+" created");
-                }
-            }
-            for (DomesticAnimal animal : diedDomesticAnimal) {
-                domesticAnimals.remove(animal);
-                pane.getChildren().remove(animal);
-                account.logSave("Info" , animal.animalType+" died from hungry");
-            }
-            //Wildanimals
-            diedDomesticAnimal.clear();
-            diedProducts.clear();
-            for (WildAnimal wildAnimal : wildAnimals) {
-                wildAnimal.turn();
-                if (!wildAnimal.caged()){
+                //grasses
+                diedGrasses.clear();
+                hungryAnimals.clear();
+                for (Grass grass : grasses) {
+                    hungryAnimals.clear();
                     for (DomesticAnimal domesticAnimal : domesticAnimals) {
-                        if (domesticAnimal.isCollissionWildAnimals(wildAnimal)){
-                            diedDomesticAnimal.add(domesticAnimal);
-                            account.logSave("Info" , domesticAnimal.animalType+" disapeared with "+wildAnimal.animalType);
+                        if (domesticAnimal.isCollissionGrass(grass) && domesticAnimal.live <= 50) {
+                            hungryAnimals.add(domesticAnimal);
                         }
                     }
-                    for (Product product : products) {
-                        if (product.isCollissionWildAnimals(wildAnimal)){
-                            diedProducts.add(product);
-                            account.logSave("Info" , product.productType+" disapeared with "+wildAnimal.animalType);
-                        }
+                    if (!hungryAnimals.isEmpty()) {
+                        minHungryAnimals(hungryAnimals);
+                        diedGrasses.add(grass);
                     }
                 }
-                // TODO: 6/21/2021 logsave
-                if (wildAnimal.time>= wildAnimal.max_time){
-                    diedWildAnimals.add(wildAnimal);
-                    // TODO: 7/15/2021 escape from cage
-                    account.logSave("Info" , "caged "+wildAnimal.animalType+" escaped with passing time");
+                for (Grass diedGrass : diedGrasses) {
+                    grasses.remove(diedGrass);
+                    pane.getChildren().remove(diedGrass);
                 }
-            }
-            for (WildAnimal diedWildAnimal : diedWildAnimals) {
-                wildAnimals.remove(diedWildAnimal);
-                pane.getChildren().remove(diedWildAnimal);
-                // TODO: 7/15/2021 escape from cage
-            }
-            for (DomesticAnimal domesticAnimal : diedDomesticAnimal) {
-                domesticAnimals.remove(domesticAnimal);
-                pane.getChildren().remove(domesticAnimal);
-            }
-            for (Product diedProduct : diedProducts) {
-                products.remove(diedProduct);
-                pane.getChildren().remove(diedProduct);
-            }
-            //cats
-            diedProducts.clear();
-            for (Cat cat : cats) {
-                cat.turn();
-                for (Product product : products) {
-                    if (product.isCollissionCat(cat)){
-                        diedProducts.add(product);
+                for (DomesticAnimal domesticAnimal : domesticAnimals) {
+                    if (domesticAnimal.live == 0)
+                        diedDomesticAnimal.add(domesticAnimal);
+                    if (domesticAnimal.time >= domesticAnimal.max_Time) {
+                        domesticAnimal.time = 0;
+                        Product product = new Product(domesticAnimal.productType, (int) domesticAnimal.x, (int) domesticAnimal.y);
+                        products.add(product);
+                        pane.getChildren().add(product);
+                        account.logSave("Info", "new " + product.productType + " created");
                     }
                 }
-            }
-            for (Product diedProduct : diedProducts) {
-                if (store.canAdd(diedProduct.capacity)){
-                    pickUp(diedProduct);
-                    account.logSave("Info" , "cat pickuped "+diedProduct.productType);
+                for (DomesticAnimal animal : diedDomesticAnimal) {
+                    domesticAnimals.remove(animal);
+                    pane.getChildren().remove(animal);
+                    account.logSave("Info", animal.animalType + " died from hungry");
                 }
-            }
-            //hounds
-            diedWildAnimals.clear();
-            for (Hound hound : hounds) {
-                hound.turn();
+                //Wildanimals
+                diedDomesticAnimal.clear();
+                diedProducts.clear();
                 for (WildAnimal wildAnimal : wildAnimals) {
-                    if (hound.isCollissionWildAnimals(wildAnimal)&&!wildAnimal.caged()){
-                        account.logSave("Info" , wildAnimal.animalType+" and HOUND died");
+                    wildAnimal.turn();
+                    if (!wildAnimal.caged()) {
+                        for (DomesticAnimal domesticAnimal : domesticAnimals) {
+                            if (domesticAnimal.isCollissionWildAnimals(wildAnimal)) {
+                                diedDomesticAnimal.add(domesticAnimal);
+                                account.logSave("Info", domesticAnimal.animalType + " disapeared with " + wildAnimal.animalType);
+                            }
+                        }
+                        for (Product product : products) {
+                            if (product.isCollissionWildAnimals(wildAnimal)) {
+                                diedProducts.add(product);
+                                account.logSave("Info", product.productType + " disapeared with " + wildAnimal.animalType);
+                            }
+                        }
+                    }
+                    // TODO: 6/21/2021 logsave
+                    if (wildAnimal.time >= wildAnimal.max_time) {
                         diedWildAnimals.add(wildAnimal);
-                        diedHounds.add(hound);
+                        // TODO: 7/15/2021 escape from cage
+                        account.logSave("Info", "caged " + wildAnimal.animalType + " escaped with passing time");
                     }
                 }
-            }
-            for (WildAnimal diedWildAnimal : diedWildAnimals) {
-                wildAnimals.remove(diedWildAnimal);
-                pane.getChildren().remove(diedWildAnimal);
-            }
-            for (Hound diedHound : diedHounds) {
-                hounds.remove(diedHound);
-                pane.getChildren().remove(diedHound);
-            }
-            //watering system
-            wateringSystem.turn();
-            if (wateringSystem.well){
-                if (wateringSystem.time>= wateringSystem.max_time){
-                    wellSuccessLabel.setText("");
-                    account.logSave("Info" , "well is ready ");
-                    wateringSystem.time = 0;
-                    wateringSystem.capacity = wateringSystem.MAX_CAPACITY;
-                    wateringSystem.well = false;
+                for (WildAnimal diedWildAnimal : diedWildAnimals) {
+                    wildAnimals.remove(diedWildAnimal);
+                    pane.getChildren().remove(diedWildAnimal);
+                    // TODO: 7/15/2021 escape from cage
                 }
-            }// TODO: 7/15/2021 welling animate 
-            //products
-            diedProducts.clear();
-            for (Product product : products) {
-                product.turn();
-                if (product.time>=product.max_time){
-                    diedProducts.add(product);
-                    account.logSave("Info" , product.productType+" disapeared from passing of time");
+                for (DomesticAnimal domesticAnimal : diedDomesticAnimal) {
+                    domesticAnimals.remove(domesticAnimal);
+                    pane.getChildren().remove(domesticAnimal);
                 }
-            }
-            for (Product diedProduct : diedProducts) {
-                products.remove(diedProduct);
-                pane.getChildren().remove(diedProduct);
-            }
-            //workshops
-            for (Factory factory : factories) {
-                factory.turn();
-                if (factory.work&&factory.time>=factory.max_time){
-                    account.logSave("Info" , factory.factoryName+ " produce "+factory.productTypeOutput );
-                    switch (factory.factoryName){
-                        case EGG_POWDER_PLANT :
-                            eggPowderPlantLabel.setText("");
-                            break;
-                        case WEAVING_FACTORY:
-                            weavingLabel.setText("");
-                            break;
-                        case POCKET_MILK_FACTORY:
-                            pocketMilkLabel.setText("");
-                            break;
-                        case BAKERY :
-                            bakeryLabel.setText("");
-                            break;
-                        case SEWING_FACTORY :
-                            sewingLabel.setText("");
-                            break;
-                        case ICECREAM_FACTORY :
-                            icecreamLabel.setText("");
-                            break;
-                        case INCUBATOR:
-                            incubatorLabel.setText("");
+                for (Product diedProduct : diedProducts) {
+                    products.remove(diedProduct);
+                    pane.getChildren().remove(diedProduct);
+                }
+                //cats
+                diedProducts.clear();
+                for (Cat cat : cats) {
+                    cat.turn();
+                    for (Product product : products) {
+                        if (product.isCollissionCat(cat)) {
+                            diedProducts.add(product);
+                        }
+                    }
+                }
+                for (Product diedProduct : diedProducts) {
+                    if (store.canAdd(diedProduct.capacity)) {
+                        pickUp(diedProduct);
+                        account.logSave("Info", "cat pickuped " + diedProduct.productType);
+                    }
+                }
+                //hounds
+                diedWildAnimals.clear();
+                for (Hound hound : hounds) {
+                    hound.turn();
+                    for (WildAnimal wildAnimal : wildAnimals) {
+                        if (hound.isCollissionWildAnimals(wildAnimal) && !wildAnimal.caged()) {
+                            account.logSave("Info", wildAnimal.animalType + " and HOUND died");
+                            diedWildAnimals.add(wildAnimal);
+                            diedHounds.add(hound);
+                        }
+                    }
+                }
+                for (WildAnimal diedWildAnimal : diedWildAnimals) {
+                    wildAnimals.remove(diedWildAnimal);
+                    pane.getChildren().remove(diedWildAnimal);
+                }
+                for (Hound diedHound : diedHounds) {
+                    hounds.remove(diedHound);
+                    pane.getChildren().remove(diedHound);
+                }
+                //watering system
+                wateringSystem.turn();
+                if (wateringSystem.well) {
+                    if (wateringSystem.time >= wateringSystem.max_time) {
+                        wellSuccessLabel.setText("");
+                        account.logSave("Info", "well is ready ");
+                        wateringSystem.time = 0;
+                        wateringSystem.capacity = wateringSystem.MAX_CAPACITY;
+                        wateringSystem.well = false;
+                    }
+                }// TODO: 7/15/2021 welling animate
+                //products
+                diedProducts.clear();
+                for (Product product : products) {
+                    product.turn();
+                    if (product.time >= product.max_time) {
+                        diedProducts.add(product);
+                        account.logSave("Info", product.productType + " disapeared from passing of time");
+                    }
+                }
+                for (Product diedProduct : diedProducts) {
+                    products.remove(diedProduct);
+                    pane.getChildren().remove(diedProduct);
+                }
+                //workshops
+                for (Factory factory : factories) {
+                    factory.turn();
+                    if (factory.work && factory.time >= factory.max_time) {
+                        account.logSave("Info", factory.factoryName + " produce " + factory.productTypeOutput);
+                        switch (factory.factoryName) {
+                            case EGG_POWDER_PLANT:
+                                eggPowderPlantLabel.setText("");
+                                break;
+                            case WEAVING_FACTORY:
+                                weavingLabel.setText("");
+                                break;
+                            case POCKET_MILK_FACTORY:
+                                pocketMilkLabel.setText("");
+                                break;
+                            case BAKERY:
+                                bakeryLabel.setText("");
+                                break;
+                            case SEWING_FACTORY:
+                                sewingLabel.setText("");
+                                break;
+                            case ICECREAM_FACTORY:
+                                icecreamLabel.setText("");
+                                break;
+                            case INCUBATOR:
+                                incubatorLabel.setText("");
+                                factory.time = 0;
+                                factory.work = false;
+                                Hen hen = new Hen(pane);
+                                pane.getChildren().add(hen);
+                                domesticAnimals.add(hen);
+                                break;
+                        }
+                        // TODO: 7/15/2021 factory
+                        if (factory.factoryName != FactoryName.INCUBATOR) {
+                            Random random = new Random();
+                            int x = 1 + random.nextInt(421);
+                            int y = 1 + random.nextInt(268);
                             factory.time = 0;
                             factory.work = false;
-                            Hen hen = new Hen(pane);
-                            pane.getChildren().add(hen);
-                            domesticAnimals.add(hen);
-                            break;
-                    }
-                    // TODO: 7/15/2021 factory
-                    if (factory.factoryName!=FactoryName.INCUBATOR) {
-                        Random random = new Random();
-                        int x = 1 + random.nextInt(421);
-                        int y = 1 + random.nextInt(268);
-                        factory.time = 0;
-                        factory.work = false;
-                        Product product = new Product(factory.productTypeOutput, x, y);
-                        pane.getChildren().add(product);
-                        products.add(product);
-                        if (factory.level == 2 && factory.numOfProduct == 2) {
-                            factory.numOfProduct = 1;
-                            x = 1 + random.nextInt(421);
-                            y = 1 + random.nextInt(268);
-                            Product product1 = new Product(factory.productTypeOutput, x, y);
-                            products.add(product1);
-                            pane.getChildren().add(product1);
-                            account.logSave("Info", factory.factoryName + " produce " + factory.productTypeOutput + " , level = 2");
+                            Product product = new Product(factory.productTypeOutput, x, y);
+                            pane.getChildren().add(product);
+                            products.add(product);
+                            if (factory.level == 2 && factory.numOfProduct == 2) {
+                                factory.numOfProduct = 1;
+                                x = 1 + random.nextInt(421);
+                                y = 1 + random.nextInt(268);
+                                Product product1 = new Product(factory.productTypeOutput, x, y);
+                                products.add(product1);
+                                pane.getChildren().add(product1);
+                                account.logSave("Info", factory.factoryName + " produce " + factory.productTypeOutput + " , level = 2");
+                            }
                         }
                     }
                 }
-            }
-            //truck
-            truck.turn();
-            if (truck.isGo&&truck.time>=truck.MAX_TIME){
-                account.logSave("Info" , "truck comed back! it is ready");
-                account.coins+=truck.wholeCoins();
-                truck.isGo=false;
-                truck.time=0;
-                truck.capacity=0;
-                truck.clear();
-            }
+                //truck
+                truck.turn();
+                if (truck.isGo && truck.time >= truck.MAX_TIME) {
+                    account.logSave("Info", "truck comed back! it is ready");
+                    account.coins += truck.wholeCoins();
+                    truckImg.setVisible(true);
+                    coinLabel.setText(String.valueOf(account.getCoins()));
+                    truck.isGo = false;
+                    truck.time = 0;
+                    truck.capacity = 0;
+                    truck.clear();
+                }
 
 
-        }
-        if(plaesePlant())
-            account.logSave("Alarm" , "please plant! there is no grass and some of animals are hungry");
-        return plaesePlant();
+            }
+            if (plaesePlant())
+                account.logSave("Alarm", "please plant! there is no grass and some of animals are hungry");
+            return true;
+
+        }return false;
     }
     public boolean plaesePlant(){
         if (grasses.isEmpty()&&existHungry()){
@@ -1076,25 +1163,25 @@ public class Manager {
         return n;
     }
 
-    public boolean endGame(Task task) {
+    public boolean endGame( ) {
         // TODO: 6/19/2021
-        if (goalCoins(task)&&goalDomesticAnimal(task)&&goalProduct(task))
+        if (goalCoins(step)&&goalDomesticAnimal(step)&&goalProduct(step))
             return true;
         return false;
-//        goalDomesticAnimal = task.goalDomesticAnimal;
-//        goalProduct = task.goalProduct;
-//        if (task.goalCoins!=0){
-//            if (account.coins>=task.goalCoins){
-//                if (task.goalDomesticAnimal==null){
-//                    if (task.goalProduct==null){
+//        goalDomesticAnimal = tasks.goalDomesticAnimal;
+//        goalProduct = tasks.goalProduct;
+//        if (tasks.goalCoins!=0){
+//            if (account.coins>=tasks.goalCoins){
+//                if (tasks.goalDomesticAnimal==null){
+//                    if (tasks.goalProduct==null){
 //                        return true;
 //                    }else{
-//                        if (task.numOfGoalProduct<=numOfProduct(task.goalProduct.productType)){
+//                        if (tasks.numOfGoalProduct<=numOfProduct(tasks.goalProduct.productType)){
 //                            return true;
 //                        }return false;
 //                    }
 //                }else {
-//                    if (task.numOfGoalDomesticAnimal<=numOfDomesticAnimal(task.goalDomesticAnimal.animalType)){
+//                    if (tasks.numOfGoalDomesticAnimal<=numOfDomesticAnimal(tasks.goalDomesticAnimal.animalType)){
 //                        if ()
 //                    }
 //
@@ -1105,35 +1192,55 @@ public class Manager {
 //
 //        }return false;
     }
-    public boolean goalCoins(Task task){
-        if (task.goalCoins!=0){
+    public boolean goalCoins(Step step){
+        if (step.goalCoin!=0){
 //            if (maxCoin<account.coins)
 //            maxCoin = account.coins;
-            if (account.coins>= task.goalCoins)
+            if (account.coins>= step.goalCoin)
                 return true;
             return false;
         }
         return true;
     }
-    public boolean goalDomesticAnimal(Task task){
-        if (task.goalDomesticAnimal!=null){
-            if (numOfDomesticAnimal(task.goalDomesticAnimal.animalType)>=task.numOfGoalDomesticAnimal)
+    public boolean goalDomesticAnimal(Step step){
+        if (step.goalDomesticAnimalName.length()!=0){
+            if (numOfDomesticAnimal(getanimalType(step.goalDomesticAnimalName))>= step.goalDomesticAnimalNum)
                 return true;
             return false;
         }
         return true;
     }
-    public boolean goalProduct(Task task){
-        if (task.goalProduct!=null){
-//            if (maxProduct <numOfProduct(task.goalProduct.productType))
-//            maxProduct = numOfProduct(task.goalProduct.productType);
-            if (numOfProduct(task.goalProduct.productType)>=task.numOfGoalProduct)
+    public boolean goalProduct(Step step){
+        if (step.goalProductName.length()!=0){
+//            if (maxProduct <numOfProduct(tasks.goalProduct.productType))
+//            maxProduct = numOfProduct(tasks.goalProduct.productType);
+            if (numOfProduct(getProductType(step.goalProductName))>= step.goalProductNum)
                 return true;
             return false;
         }
         return true;
     }
-
+    private ProductType getProductType(String productName){
+        if (productName.equalsIgnoreCase("Egg"))
+            return ProductType.EGG;
+        else if (productName.equalsIgnoreCase("wing"))
+            return ProductType.WING;
+        else if (productName.equalsIgnoreCase("MILK"))
+            return ProductType.MILK;
+        else if (productName.equalsIgnoreCase("POWDER"))
+            return ProductType.POWDER;
+        else if (productName.equalsIgnoreCase("FABRIC"))
+            return ProductType.FABRIC;
+        else if (productName.equalsIgnoreCase("POCKET_MILK"))
+            return ProductType.POCKET_MILK;
+        else if (productName.equalsIgnoreCase("BREAD"))
+            return ProductType.BREAD;
+        else if (productName.equalsIgnoreCase("CLOTH"))
+            return ProductType.CLOTH;
+        else if (productName.equalsIgnoreCase("ICE_CREAM"))
+            return ProductType.ICE_CREAM;
+        return null;
+    }
     public boolean caged(String x0, String y0) {
         int x = Integer.parseInt(x0);
         int y = Integer.parseInt(y0);
@@ -1179,6 +1286,8 @@ public class Manager {
         for (Product product : products) {
             if (product.intersect(x,y)){
                 if (store.canAdd(product)){
+                    if (step.goalProductName.length()!=0&&step.goalProductName.equalsIgnoreCase(String.valueOf(product.productType)))
+                        goalProductNum++;
                     store.add(product);
                     died.add(product);
                     storeSuccess.setText(product.productType+" stored successfully");

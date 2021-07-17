@@ -26,7 +26,7 @@
 ////    Scanner scanner = new Scanner(System.in);
 ////    String input = "";
 ////    Missions missions ;
-////    Task task;
+////    Tasks tasks;
 ////    public void run() {
 ////        listOfWholeAccounts.load();
 ////        enterGame();
@@ -147,7 +147,7 @@
 ////    }
 ////
 ////    public void gameInput(int level) {
-////        task = missions.tasks[level-1];
+////        tasks = missions.tasks[level-1];
 ////        Pattern patternBuy = Pattern.compile("(?i)buy\\s(\\w+)");
 ////        Pattern patternPickup = Pattern.compile("(?i)PICKUP\\s(\\d+)\\s(\\d+)");
 ////        Pattern patternWell = Pattern.compile("(?i)well");
@@ -167,7 +167,7 @@
 ////
 ////
 ////        input = scanner.nextLine();
-////        while (!input.equalsIgnoreCase("exit") && !manager.endGame(task)) {
+////        while (!input.equalsIgnoreCase("exit") && !manager.endGame(tasks)) {
 ////            input = scanner.nextLine();
 ////            Matcher matcherBuy = patternBuy.matcher(input);
 ////            Matcher matcherPickup = patternPickup.matcher(input);
@@ -261,7 +261,7 @@
 ////                    account.logSave("Error" , "wildAnimal does not stored! capacity is not enough");
 ////                }
 ////            }else if (matcherTurn.find()){
-////                if (manager.turn(Integer.parseInt(matcherTurn.group(1)), task)){
+////                if (manager.turn(Integer.parseInt(matcherTurn.group(1)), tasks)){
 ////                    System.out.println("please plant! there is no grass and some of animals are in danger!");
 ////                }
 ////                inquiry();
@@ -303,13 +303,13 @@
 ////                invalid();
 ////            }
 ////        }
-////        if (manager.endGame(task)){
+////        if (manager.endGame(tasks)){
 ////            if (level== account.completeLevels)
 ////                account.completeLevels++;
 ////            System.out.println(level+ "complete successfuly!");
 ////            account.logSave("Info" , level+ " complete successfuly");
-////            if (manager.time<= task.max_time){
-////                account.coins= task.prize;
+////            if (manager.time<= tasks.max_time){
+////                account.coins= tasks.prize;
 ////                System.out.println("you win the prizeCoin!");
 ////            }
 ////            listOfWholeAccounts.save();
@@ -357,15 +357,15 @@
 ////            System.out.println(product.productType+ " ["+product.x+" , "+product.y+"]");
 ////        }
 ////
-////        if (task.goalCoins!=0){
-////            System.out.println("coins: "+manager.account.coins+"/"+task.goalCoins);
+////        if (tasks.goalCoins!=0){
+////            System.out.println("coins: "+manager.account.coins+"/"+tasks.goalCoins);
 ////        }
 ////        else System.out.println("coins: "+ account.coins);
-////        if (task.goalDomesticAnimal!=null){
-////            System.out.println(task.goalDomesticAnimal.animalType+": "+manager.numOfDomesticAnimal(task.goalDomesticAnimal.animalType)+"/"+task.numOfGoalDomesticAnimal);
+////        if (tasks.goalDomesticAnimal!=null){
+////            System.out.println(tasks.goalDomesticAnimal.animalType+": "+manager.numOfDomesticAnimal(tasks.goalDomesticAnimal.animalType)+"/"+tasks.numOfGoalDomesticAnimal);
 ////        }
-////        if (task.goalProduct!=null){
-////            System.out.println(task.goalProduct.productType+": "+manager.numOfProduct(task.goalProduct.productType)+"/"+task.numOfGoalProduct);
+////        if (tasks.goalProduct!=null){
+////            System.out.println(tasks.goalProduct.productType+": "+manager.numOfProduct(tasks.goalProduct.productType)+"/"+tasks.numOfGoalProduct);
 ////        }
 ////        // TODO: 6/17/2021 sout tasks
 ////    }
@@ -412,7 +412,7 @@
 //    Scanner scanner = new Scanner(System.in);
 //    String input = "";
 //    Missions missions ;
-//    Task task;
+//    Tasks tasks;
 //    public void run() {
 //        listOfWholeAccounts.load();
 //        enterGame();
@@ -476,7 +476,7 @@
 //    }
 //
 //    private void menu() {
-//        manager = new Manager(account , manager.pane);
+////        manager = new Manager(account , manager.pane);
 //        System.out.print("Menu: ");
 //        System.out.println("Enter start , logout , settings or exit:");
 //        input = scanner.next();
@@ -533,7 +533,7 @@
 //    }
 //
 //    public void gameInput(int level) {
-//        task = missions.tasks[level-1];
+//        tasks = missions.tasks[level-1];
 //        Pattern patternBuy = Pattern.compile("(?i)buy\\s(\\w+)");
 //        Pattern patternPickup = Pattern.compile("(?i)PICKUP\\s(\\d+)\\s(\\d+)");
 //        Pattern patternWell = Pattern.compile("(?i)well");
@@ -553,7 +553,7 @@
 //
 //
 //        input = scanner.nextLine();
-//        while (!input.equalsIgnoreCase("exit") && !manager.endGame(task)) {
+//        while (!input.equalsIgnoreCase("exit") && !manager.endGame(tasks)) {
 //            input = scanner.nextLine();
 //            Matcher matcherBuy = patternBuy.matcher(input);
 //            Matcher matcherPickup = patternPickup.matcher(input);
@@ -689,13 +689,13 @@
 //                invalid();
 //            }
 //        }
-//        if (manager.endGame(task)){
+//        if (manager.endGame(tasks)){
 //            if (level== account.completeLevels)
 //                account.completeLevels++;
 //            System.out.println(level+ "complete successfuly!");
 //            account.logSave("Info" , level+ " complete successfuly");
-//            if (manager.time<= task.max_time){
-//                account.coins= task.prize;
+//            if (manager.time<= tasks.max_time){
+//                account.coins= tasks.prize;
 //                System.out.println("you win the prizeCoin!");
 //            }
 //            listOfWholeAccounts.save();
@@ -743,15 +743,15 @@
 //            System.out.println(product.productType+ " ["+product.centerX+" , "+product.centerY+"]");
 //        }
 //
-//        if (task.goalCoins!=0){
-//            System.out.println("coins: "+manager.account.coins+"/"+task.goalCoins);
+//        if (tasks.goalCoins!=0){
+//            System.out.println("coins: "+manager.account.coins+"/"+tasks.goalCoins);
 //        }
 //        else System.out.println("coins: "+ account.coins);
-//        if (task.goalDomesticAnimal!=null){
-//            System.out.println(task.goalDomesticAnimal.animalType+": "+manager.numOfDomesticAnimal(task.goalDomesticAnimal.animalType)+"/"+task.numOfGoalDomesticAnimal);
+//        if (tasks.goalDomesticAnimal!=null){
+//            System.out.println(tasks.goalDomesticAnimal.animalType+": "+manager.numOfDomesticAnimal(tasks.goalDomesticAnimal.animalType)+"/"+tasks.numOfGoalDomesticAnimal);
 //        }
-//        if (task.goalProduct!=null){
-//            System.out.println(task.goalProduct.productType+": "+manager.numOfProduct(task.goalProduct.productType)+"/"+task.numOfGoalProduct);
+//        if (tasks.goalProduct!=null){
+//            System.out.println(tasks.goalProduct.productType+": "+manager.numOfProduct(tasks.goalProduct.productType)+"/"+tasks.numOfGoalProduct);
 //        }
 //        // TODO: 6/17/2021 sout tasks
 //    }

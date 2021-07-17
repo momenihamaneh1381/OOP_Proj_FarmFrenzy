@@ -1,6 +1,9 @@
 package graphicPackage;
 
 import classes.Account;
+import classes.FileOperator;
+import classes.Missions;
+import com.google.gson.Gson;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -39,7 +42,10 @@ public  class Main extends Application {
             stage.setTitle(title);
         }
 
+
         public void goToMenu() throws IOException{
+        if (stage==null)
+            stage = new Stage();
             Parent root = FXMLLoader.load(getClass().getResource("MenuForm.fxml"));
             Scene menuScene = new Scene(root , 650 ,365);
             stage.setResizable(false);

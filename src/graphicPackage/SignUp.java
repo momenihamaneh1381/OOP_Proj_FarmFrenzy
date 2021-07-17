@@ -35,6 +35,7 @@ public class SignUp {
             signUpLabel.setText("This username already exist!");
         }else  {
             account = new Account(userNameTxt.getText() ,passwordTxt.getText());
+            account.logSave("Info" , userNameTxt.getText()+" signUp successfully");
             listOfAccounts.accounts.add(account);
             listOfAccounts.save();
             FileWriter file = new FileWriter("username.txt" , false);

@@ -1,0 +1,18 @@
+{
+  "goalProductName": "egg",
+  "goalProductNum": 10,
+  "goalDomesticAnimalName": "buffalo",
+  "goalDomesticAnimalNum": 1,
+  "wildNames": [
+    "bear",
+    "lion"
+  ],
+  "wildNum": [
+    2,
+    10
+  ],
+  "initCoin": 500,
+  "prize": 200,
+  "maxTima": 50,
+  "goalCoin": 1500
+}

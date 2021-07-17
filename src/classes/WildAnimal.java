@@ -50,7 +50,7 @@ public class WildAnimal extends Animal implements Turn{
         max_time =5;
         cage =0;
         time = 0;
-        Random random  = new Random();
+//        Random random  = new Random();
 //        super.x = 1+random.nextInt(6);
 //        super.y = 1+random.nextInt(6);
         direction = Direction.DOWN.randomDirection();
@@ -67,8 +67,8 @@ public class WildAnimal extends Animal implements Turn{
         if (caged()){
             time++;
         }else {
-            if(cage>0)
-            cage--; // TODO: 6/18/2021 doubt
+//            if(cage>0)
+//            cage--; // TODO: 6/18/2021 doubt
 //            for (int i = 0; i < speed; i++) {
 //                if (x == 1 || y == 1 || x == 6 || y == 6) {
 //                    if (x == 1) {
@@ -113,6 +113,7 @@ public class WildAnimal extends Animal implements Turn{
     }
 
     public boolean intersect(int x0 , int y0){
-        return x0>=(x-20)&&x0<=(x+20)&&y0>=(y-20)&&y0<=(y+20);
+//        return x0>=(x-20)&&x0<=(x+20)&&y0>=(y-20)&&y0<=(y+20);
+        return x0>=(x-30)&&x0<=(x+30)&&y0>=(y-30)&&y0<=(y+30);
     }
 }

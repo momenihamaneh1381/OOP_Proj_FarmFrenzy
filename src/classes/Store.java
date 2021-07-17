@@ -5,7 +5,7 @@ public class Store {
     public ArrayList<Product> productsStoreList;
     public ArrayList<WildAnimal> wildAnimalsStoreList;
     final int MAX_CAPACITY = 30;
-    int capacity;
+    public int capacity;
 
 
     //singleton design
@@ -53,6 +53,28 @@ public class Store {
         wildAnimalsStoreList.remove(wildAnimal);
         capacity-=wildAnimal.capacity;
     }
-
+    public int numProduct(ProductType productType){
+        int n = 0;
+        for (Product product : productsStoreList) {
+            if (product.productType==productType)
+                n++;
+        }
+        return n;
+    }
+    public int numProduct(AnimalType animalType){
+        int n = 0;
+        for (WildAnimal wildAnimal : wildAnimalsStoreList) {
+            if (wildAnimal.animalType==animalType)
+                n++;
+        }
+        return n;
+    }
+    public WildAnimal getWild(AnimalType animalType){
+        for (WildAnimal wildAnimal : wildAnimalsStoreList) {
+            if (wildAnimal.animalType==animalType)
+                return wildAnimal;
+        }
+        return null;
+    }
 
 }

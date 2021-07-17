@@ -1,14 +1,12 @@
 package graphicPackage;
 
 import animations.AnimalTransition;
+import animations.EggpowderTransition;
 import classes.*;
 
 
 import com.google.gson.Gson;
 import javafx.application.Application;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,7 +15,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -29,9 +26,6 @@ import javafx.stage.Stage;
 
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Game extends Application {
@@ -60,7 +54,29 @@ public class Game extends Application {
     public ImageView incubatorImg;
     public Label incubatorLabel;
     public AnchorPane storeListPane;
+    public Label eggNumLabel;
+    public Label milkNumLabel;
+    public Label wingNumLabel;
+    public Label powderNumLabel;
+    public Label fabricNumLabel;
+    public Label pocketMilkNumLabel;
+    public Label breadNumLabel;
+    public Label clothNumLabel;
+    public Label icecreamNumLabel;
+    public Label lionNumLabel;
+    public Label tigerNumlabel;
+    public Label bearNumLabel;
+    public Label addSuccessLabel;
+    public Button backBtn;
+    public Button truckGoBtn;
+    public Label capacityLabel;
+    public Label maxtimeLabel;
+    public Label timeLabel;
+    public Label goalProductLabel;
+    public Label goalCoinLabel;
+    public Label goalDomesticAnimalLabel;
     AnimalTransition animalTransition;
+    boolean instore , intruck;
 //    ArrayList<Animal>animals ;
 //    ArrayList<Grass> grasses ;
 //    ArrayList<DomesticAnimal> domesticAnimals;
@@ -79,8 +95,8 @@ public class Game extends Application {
     Account account;
     ListOfAccounts listOfAccounts;
     Missions missions ;
-    Task task;
-    int level;
+    Tasks tasks;
+    public static int level;
 //    Stage stageMenu;
 //    int flag= 0;
 
@@ -132,10 +148,34 @@ public class Game extends Application {
         listOfAccounts = new ListOfAccounts();
         listOfAccounts.load();
         readUser();
-        manager = new Manager(account , gamePane , wellSuccessLabel , storeSuccess , storeFail , eggpowderLabel , weavingLabel , pocketMilkLabel , bakeryLabel , sewingLabel , icecreamLabel , incubatorLabel);
+
+
+        manager = new Manager(account , gamePane , wellSuccessLabel , storeSuccess , storeFail , eggpowderLabel
+                , weavingLabel , pocketMilkLabel , bakeryLabel , sewingLabel , icecreamLabel , incubatorLabel
+                , truckImg , coinLabel , timeLabel);
+        account.setCoins(account.getCoins()+manager.step.initCoin);
+        maxtimeLabel.setText(String.valueOf(manager.step.maxTime));
+        if (manager.step.goalCoin==0)
+        goalCoinLabel.setVisible(false);
+        else {
+            goalCoinLabel.setVisible(true);
+            goalCoinLabel.setText(String.valueOf("coin : "+manager.step.goalCoin));
+        }
+        if (manager.step.goalDomesticAnimalName.length()==0)
+            goalDomesticAnimalLabel.setVisible(false);
+        else {
+            goalDomesticAnimalLabel.setVisible(true);
+            goalDomesticAnimalLabel.setText(manager.step.goalDomesticAnimalName+" : "+manager.step.goalDomesticAnimalNum);
+        }
+        if (manager.step.goalProductName.length()==0)
+            goalProductLabel.setVisible(false);
+        else {
+            goalProductLabel.setVisible(true);
+            goalProductLabel.setText(manager.step.goalProductName+" : "+manager.step.goalProductNum);
+        }
 //        manager.missionRead(missions);
-//        task = missions.tasks[level-1];
-//        account.setCoins(account.getCoins()+ task.initialCoins) ;
+//        tasks = missions.tasks[level-1];
+//        account.setCoins(account.getCoins()+ tasks.initialCoins) ;
         // TODO: 7/14/2021
         coinLabel.setText(String.valueOf(account.getCoins()));
 //        domesticAnimals =manager.domesticAnimals;
@@ -147,7 +187,7 @@ public class Game extends Application {
 //        Hen hen = new Hen(gamePane);
 //        animals.add(hen);
 //        gamePane.getChildren().add(hen);
-        animalTransition = new AnimalTransition(manager , lowCoinLabel , lowWellLabel , storeSuccess , storeFail);
+        animalTransition = new AnimalTransition(manager , lowCoinLabel , lowWellLabel , storeSuccess , storeFail , this);
         animalTransition.play();// TODO: 7/14/2021 in animate
         gamePane.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -160,6 +200,7 @@ public class Game extends Application {
             }
         });
     }
+
 
     private void readUser( ) {
         try {
@@ -198,33 +239,6 @@ public class Game extends Application {
         }
     }
 
-    private void showStore(){
-
-        storeListPane.setVisible(true);
-        // TODO: 7/15/2021  
-//        ObservableList<Product> observableList = FXCollections.observableArrayList();
-//        for (Product product : store.productsStoreList) {
-//            observableList.add(product);
-//        }
-//        storeTable.setItems(observableList);
-//        nameCol.setCellValueFactory(new PropertyValueFactory<Product , String>("name"));
-//        capacityCol.setCellValueFactory(new PropertyValueFactory<Product , Integer>("capacity"));
-//        priceCol.setCellValueFactory(new PropertyValueFactory<Product , Integer>("price"));
-//        numCol.setCellValueFactory(new PropertyValueFactory<Product , Integer>("num"));
-////        numCol.setCellValueFactory(new PropertyValueFactory<Product , Integer>("numOfGood"));
-    }
-
-    public void storeClick( ) {
-        animalTransition.pause();
-        showStore();
-        // TODO: 7/13/2021
-    }
-
-    public void truckClick( ) {
-        storeListPane.setVisible(false);
-        animalTransition.playFromStart();
-        // TODO: 7/13/2021
-    }
 
 //    public void buyAnimal( ) {
 //        Hen hen  = new Hen(gamePane);
@@ -355,6 +369,8 @@ public class Game extends Application {
     public void workEggPowderPlant(){
         if (manager.work("eggPowderPlant")){
             eggpowderLabel.setText("wait 4 Sec...");
+//            EggpowderTransition eggpowderTransition = new EggpowderTransition(manager , eggPowderPlantImg);
+//            eggpowderTransition.play();
             // TODO: 7/15/2021
         }else {
             account.logSave("Error" , "EGG is not enough to work EGG POWDER PLANT");
@@ -378,12 +394,12 @@ public class Game extends Application {
         coinLabel.setText(String.valueOf(account.getCoins()));
     }
     public void upgradeEggPowderPlant( )   {
-        if (manager.eggPowderPlant.getLevel()==1&&manager.canBuild(manager.eggPowderPlant.getPrice()/2)) {
+        if (!manager.eggPowderPlant.work&&manager.eggPowderPlant.getLevel()==1&&manager.canBuild(manager.eggPowderPlant.getPrice()/2)) {
             manager.eggPowderPlant.upgrade();
             account.logSave("Info", "EGG POWDER PLANT upgrade successfully");
             eggpowderPlantUpgradeBtn.setVisible(false);
-            eggPowderPlantImg.setImage(new Image("source/eggpowderPlant2.jpg"));
-        }else {
+            eggPowderPlantImg.setImage(new Image("source/factory/eggPowderPlantL2.png"));
+        }else if (!manager.eggPowderPlant.work){
             account.logSave("Error" , "coins is not enough");
             lowCoinLabel.setText("Coin is not enough");
         }
@@ -407,13 +423,13 @@ public class Game extends Application {
         coinLabel.setText(String.valueOf(account.getCoins()));
     }
     public void upgradeWeavingFactory( ) {
-        if (manager.weavingFactory.getLevel()==1&&manager.canBuild(manager.weavingFactory.getPrice()/2)) {
+        if (!manager.weavingFactory.work&&manager.weavingFactory.getLevel()==1&&manager.canBuild(manager.weavingFactory.getPrice()/2)) {
             manager.weavingFactory.upgrade();
             account.logSave("Info", "WEAVING FACTORY upgrade successfully");
             upgradeWeavingBtn.setVisible(false);
-            weavingImg.setImage(new Image("source/eggpowderPlant2.jpg"));
+            weavingImg.setImage(new Image("source/factory/weavingFactoryL2.png"));
             // TODO: 7/16/2021 image
-        }else {
+        }else if (!manager.weavingFactory.work){
             account.logSave("Error" , "coins is not enough");
             lowCoinLabel.setText("Coin is not enough");
         }
@@ -445,13 +461,13 @@ public class Game extends Application {
         coinLabel.setText(String.valueOf(account.getCoins()));
     }
     public void upgradePocketMilkFactory( ) {
-        if (manager.pocketMilkFactory.getLevel()==1&&manager.canBuild(manager.pocketMilkFactory.getPrice()/2)) {
+        if (!manager.pocketMilkFactory.work&&manager.pocketMilkFactory.getLevel()==1&&manager.canBuild(manager.pocketMilkFactory.getPrice()/2)) {
             manager.pocketMilkFactory.upgrade();
             account.logSave("Info", "POCKET MILK FACTORY upgrade successfully");
             upgradePocketMilkBtn.setVisible(false);
-            pocketMilkImg.setImage(new Image("source/eggpowderPlant2.jpg"));
+            pocketMilkImg.setImage(new Image("source/factory/pocketMilkL2.png"));
             // TODO: 7/16/2021  image
-        }else {
+        }else if (!manager.pocketMilkFactory.work){
             account.logSave("Error" , "coins is not enough");
             lowCoinLabel.setText("Coin is not enough");
         }
@@ -483,13 +499,13 @@ public class Game extends Application {
         coinLabel.setText(String.valueOf(account.getCoins()));
     }
     public void upgradeBakery( ) {
-        if (manager.bakery.getLevel()==1&&manager.canBuild(manager.bakery.getPrice()/2)) {
+        if (!manager.bakery.work&&manager.bakery.getLevel()==1&&manager.canBuild(manager.bakery.getPrice()/2)) {
             manager.bakery.upgrade();
             account.logSave("Info", "BAKERY upgrade successfully");
             upgradeBakeryBtn.setVisible(false);
-            bakeryImg.setImage(new Image("source/eggpowderPlant2.jpg"));
+            bakeryImg.setImage(new Image("source/factory/bakeryL2.png"));
             // TODO: 7/16/2021  image
-        }else {
+        }else if (!manager.bakery.work){
             account.logSave("Error" , "coins is not enough");
             lowCoinLabel.setText("Coin is not enough");
         }
@@ -522,13 +538,13 @@ public class Game extends Application {
         coinLabel.setText(String.valueOf(account.getCoins()));
     }
     public void upgradeSweingFactory( ) {
-        if (manager.sewingFactory.getLevel()==1&&manager.canBuild(manager.sewingFactory.getPrice()/2)) {
+        if (!manager.sewingFactory.work&&manager.sewingFactory.getLevel()==1&&manager.canBuild(manager.sewingFactory.getPrice()/2)) {
             manager.sewingFactory.upgrade();
             account.logSave("Info", "SEWING FACTORY upgrade successfully");
             upgradeSewingBtn.setVisible(false);
-            sewingImg.setImage(new Image("source/eggpowderPlant2.jpg"));
+            sewingImg.setImage(new Image("source/factory/sewingFactoryL2.png"));
             // TODO: 7/16/2021  image
-        }else {
+        }else if (!manager.sewingFactory.work){
             account.logSave("Error" , "coins is not enough");
             lowCoinLabel.setText("Coin is not enough");
         }
@@ -560,13 +576,13 @@ public class Game extends Application {
         coinLabel.setText(String.valueOf(account.getCoins()));
     }
     public void upgradeIceCreamFactory( ) {
-        if (manager.icecreamFactory.getLevel()==1&&manager.canBuild(manager.icecreamFactory.getPrice()/2)) {
+        if (!manager.icecreamFactory.work&&manager.icecreamFactory.getLevel()==1&&manager.canBuild(manager.icecreamFactory.getPrice()/2)) {
             manager.icecreamFactory.upgrade();
             account.logSave("Info", "ICECREAM FACTORY upgrade successfully");
             upgradeIcecreamBtn.setVisible(false);
-            icecreamImg.setImage(new Image("source/eggpowderPlant2.jpg"));
+            icecreamImg.setImage(new Image("source/factory/icecreamL2.png"));
             // TODO: 7/16/2021  image
-        }else {
+        }else if (!manager.icecreamFactory.work){
             account.logSave("Error" , "coins is not enough");
             lowCoinLabel.setText("Coin is not enough");
         }
@@ -590,31 +606,530 @@ public class Game extends Application {
         }
     }
 
+
+
+//    private void showStore(){
+//
+//        // TODO: 7/15/2021
+//    }
+
+    private void setLabelsStore(){
+        eggNumLabel.setText(String.valueOf(store.numProduct(ProductType.EGG)));
+        wingNumLabel.setText(String.valueOf(store.numProduct(ProductType.WING)));
+        milkNumLabel.setText(String.valueOf(store.numProduct(ProductType.MILK)));
+        powderNumLabel.setText(String.valueOf(store.numProduct(ProductType.POWDER)));
+        fabricNumLabel.setText(String.valueOf(store.numProduct(ProductType.FABRIC)));
+        pocketMilkNumLabel.setText(String.valueOf(store.numProduct(ProductType.POCKET_MILK)));
+        breadNumLabel.setText(String.valueOf(store.numProduct(ProductType.BREAD)));
+        clothNumLabel.setText(String.valueOf(store.numProduct(ProductType.CLOTH)));
+        icecreamNumLabel.setText(String.valueOf(store.numProduct(ProductType.ICE_CREAM)));
+        lionNumLabel.setText(String.valueOf(store.numProduct(AnimalType.LION)));
+        bearNumLabel.setText(String.valueOf(store.numProduct(AnimalType.BEAR)));
+        tigerNumlabel.setText(String.valueOf(store.numProduct(AnimalType.TIGER)));
+        addSuccessLabel.setText("");
+    }
+    private void setLabelsTruck(){
+        eggNumLabel.setText(String.valueOf(truck.numProduct(ProductType.EGG)));
+        wingNumLabel.setText(String.valueOf(truck.numProduct(ProductType.WING)));
+        milkNumLabel.setText(String.valueOf(truck.numProduct(ProductType.MILK)));
+        powderNumLabel.setText(String.valueOf(truck.numProduct(ProductType.POWDER)));
+        fabricNumLabel.setText(String.valueOf(truck.numProduct(ProductType.FABRIC)));
+        pocketMilkNumLabel.setText(String.valueOf(truck.numProduct(ProductType.POCKET_MILK)));
+        breadNumLabel.setText(String.valueOf(truck.numProduct(ProductType.BREAD)));
+        clothNumLabel.setText(String.valueOf(truck.numProduct(ProductType.CLOTH)));
+        icecreamNumLabel.setText(String.valueOf(truck.numProduct(ProductType.ICE_CREAM)));
+        lionNumLabel.setText(String.valueOf(truck.numProduct(AnimalType.LION)));
+        bearNumLabel.setText(String.valueOf(truck.numProduct(AnimalType.BEAR)));
+        tigerNumlabel.setText(String.valueOf(truck.numProduct(AnimalType.TIGER)));
+        addSuccessLabel.setText("");
+    }
+    public void storeClick( ) {
+        instore = true;
+        intruck = false;
+        capacityLabel.setText(String.valueOf(store.capacity));
+        animalTransition.pause();
+        truckGoBtn.setVisible(false);
+        setLabelsStore();
+        storeListPane.setVisible(true);
+        // TODO: 7/13/2021
+    }
+
+    public void truckClick( ) {
+        instore = false;
+        intruck = true;
+        capacityLabel.setText(String.valueOf(truck.capacity));
+        animalTransition.pause();
+        storeListPane.setVisible(true);
+        truckGoBtn.setVisible(true);
+        setLabelsTruck();
+
+        // TODO: 7/13/2021
+    }
+
+
     public void eggTruckload( ) {
+        if (instore) {
+            if (!truck.isGo && manager.truckLoad("egg")) {
+                addSuccessLabel.setText("1 Egg added to truck");
+                account.logSave("Info", "1 Egg added to truck");
+                eggNumLabel.setText(String.valueOf(store.numProduct(ProductType.EGG)));
+                capacityLabel.setText(String.valueOf(store.capacity));
+            } else if (truck.isGo) {
+                addSuccessLabel.setText("truck is not ready");
+                account.logSave("Error", "truck is not ready");
+            } else if (store.numProduct(ProductType.EGG) == 0) {
+                addSuccessLabel.setText("num of eggs is 0 !");
+                account.logSave("Error", "num of eggs is 0 ");
+            } else {
+                addSuccessLabel.setText("capacity of truck is not enough");
+                account.logSave("Error", "capacity of truck is not enough ");
+            }
+        }else if (intruck){
+            if (!truck.isGo && manager.truckUnLoad("egg")) {
+                addSuccessLabel.setText("1 Egg unLoaded");
+                account.logSave("Info", "1 Egg unLoaded");
+                eggNumLabel.setText(String.valueOf(truck.numProduct(ProductType.EGG)));
+                capacityLabel.setText(String.valueOf(truck.capacity));
+            } else if (truck.isGo) {
+                addSuccessLabel.setText("truck is not ready");
+                account.logSave("Error", "truck is not ready");
+            } else if (truck.numProduct(ProductType.EGG) == 0) {
+                addSuccessLabel.setText("num of eggs is 0 !");
+                account.logSave("Error", "num of eggs is 0 ");
+            } else {
+                addSuccessLabel.setText("capacity of store is not enough");
+                account.logSave("Error", "capacity of store is not enough ");
+            }
+        }
     }
 
     public void wingTruckload( ) {
+        if (instore) {
+            if (!truck.isGo && manager.truckLoad("wing")) {
+                addSuccessLabel.setText("1 Wing added to truck");
+                account.logSave("Info", "1 Wing added to truck");
+                wingNumLabel.setText(String.valueOf(store.numProduct(ProductType.WING)));
+                capacityLabel.setText(String.valueOf(store.capacity));
+            } else if (truck.isGo) {
+                addSuccessLabel.setText("truck is not ready");
+                account.logSave("Error", "truck is not ready");
+            } else if (store.numProduct(ProductType.WING) == 0) {
+                addSuccessLabel.setText("num of Wing is 0 !");
+                account.logSave("Error", "num of Wing is 0 ");
+            } else {
+                addSuccessLabel.setText("capacity of truck is not enough");
+                account.logSave("Error", "capacity of truck is not enough ");
+            }
+        }else if (intruck){
+            if (!truck.isGo && manager.truckUnLoad("wing")) {
+                addSuccessLabel.setText("1 Wing unLoaded");
+                account.logSave("Info", "1 Wing unLoaded");
+                wingNumLabel.setText(String.valueOf(truck.numProduct(ProductType.WING)));
+                capacityLabel.setText(String.valueOf(truck.capacity));
+            } else if (truck.isGo) {
+                addSuccessLabel.setText("truck is not ready");
+                account.logSave("Error", "truck is not ready");
+            } else if (truck.numProduct(ProductType.WING) == 0) {
+                addSuccessLabel.setText("num of Wing is 0 !");
+                account.logSave("Error", "num of Wing is 0 ");
+            } else {
+                addSuccessLabel.setText("capacity of store is not enough");
+                account.logSave("Error", "capacity of store is not enough ");
+            }
+        }
     }
 
     public void milkTruckload( ) {
+        if (instore) {
+            if (!truck.isGo && manager.truckLoad("milk")) {
+                addSuccessLabel.setText("1 Milk added to truck");
+                account.logSave("Info", "1 Milk added to truck");
+                milkNumLabel.setText(String.valueOf(store.numProduct(ProductType.MILK)));
+                capacityLabel.setText(String.valueOf(store.capacity));
+            } else if (truck.isGo) {
+                addSuccessLabel.setText("truck is not ready");
+                account.logSave("Error", "truck is not ready");
+            } else if (store.numProduct(ProductType.MILK) == 0) {
+                addSuccessLabel.setText("num of Milk is 0 !");
+                account.logSave("Error", "num of Milk is 0 ");
+            } else {
+                addSuccessLabel.setText("capacity of truck is not enough");
+                account.logSave("Error", "capacity of truck is not enough ");
+            }
+        }else if (intruck){
+            if (!truck.isGo && manager.truckUnLoad("milk")) {
+                addSuccessLabel.setText("1 Milk unLoaded");
+                account.logSave("Info", "1 Milk unLoaded");
+                milkNumLabel.setText(String.valueOf(truck.numProduct(ProductType.MILK)));
+                capacityLabel.setText(String.valueOf(truck.capacity));
+            } else if (truck.isGo) {
+                addSuccessLabel.setText("truck is not ready");
+                account.logSave("Error", "truck is not ready");
+            } else if (truck.numProduct(ProductType.MILK) == 0) {
+                addSuccessLabel.setText("num of Milk is 0 !");
+                account.logSave("Error", "num of Milk is 0 ");
+            } else {
+                addSuccessLabel.setText("capacity of store is not enough");
+                account.logSave("Error", "capacity of store is not enough ");
+            }
+        }
     }
 
     public void powderTruckload( ) {
+        if (instore) {
+            if (!truck.isGo && manager.truckLoad("powder")) {
+                addSuccessLabel.setText("1 Powder added to truck");
+                account.logSave("Info", "1 Powder added to truck");
+                powderNumLabel.setText(String.valueOf(store.numProduct(ProductType.POWDER)));
+                capacityLabel.setText(String.valueOf(store.capacity));
+            } else if (truck.isGo) {
+                addSuccessLabel.setText("truck is not ready");
+                account.logSave("Error", "truck is not ready");
+            } else if (store.numProduct(ProductType.POWDER) == 0) {
+                addSuccessLabel.setText("num of Powder is 0 !");
+                account.logSave("Error", "num of Powder is 0 ");
+            } else {
+                addSuccessLabel.setText("capacity of truck is not enough");
+                account.logSave("Error", "capacity of truck is not enough ");
+            }
+        }else if (intruck){
+            if (!truck.isGo && manager.truckUnLoad("Powder")) {
+                addSuccessLabel.setText("1 Powder unLoaded");
+                account.logSave("Info", "1 Powder unLoaded");
+                powderNumLabel.setText(String.valueOf(truck.numProduct(ProductType.POWDER)));
+                capacityLabel.setText(String.valueOf(truck.capacity));
+            } else if (truck.isGo) {
+                addSuccessLabel.setText("truck is not ready");
+                account.logSave("Error", "truck is not ready");
+            } else if (truck.numProduct(ProductType.POWDER) == 0) {
+                addSuccessLabel.setText("num of Powder is 0 !");
+                account.logSave("Error", "num of Powder is 0 ");
+            } else {
+                addSuccessLabel.setText("capacity of store is not enough");
+                account.logSave("Error", "capacity of store is not enough ");
+            }
+        }
     }
 
     public void fabricTruckload( ) {
+        if (instore) {
+            if (!truck.isGo && manager.truckLoad("fabric")) {
+                addSuccessLabel.setText("1 Fabric added to truck");
+                account.logSave("Info", "1 Fabric added to truck");
+                fabricNumLabel.setText(String.valueOf(store.numProduct(ProductType.FABRIC)));
+                capacityLabel.setText(String.valueOf(store.capacity));
+            } else if (truck.isGo) {
+                addSuccessLabel.setText("truck is not ready");
+                account.logSave("Error", "truck is not ready");
+            } else if (store.numProduct(ProductType.FABRIC) == 0) {
+                addSuccessLabel.setText("num of Fabric is 0 !");
+                account.logSave("Error", "num of Fabric is 0 ");
+            } else {
+                addSuccessLabel.setText("capacity of truck is not enough");
+                account.logSave("Error", "capacity of truck is not enough ");
+            }
+        }else if (intruck){
+            if (!truck.isGo && manager.truckUnLoad("Fabric")) {
+                addSuccessLabel.setText("1 Fabric unLoaded");
+                account.logSave("Info", "1 Fabric unLoaded");
+                fabricNumLabel.setText(String.valueOf(truck.numProduct(ProductType.FABRIC)));
+                capacityLabel.setText(String.valueOf(truck.capacity));
+            } else if (truck.isGo) {
+                addSuccessLabel.setText("truck is not ready");
+                account.logSave("Error", "truck is not ready");
+            } else if (truck.numProduct(ProductType.FABRIC) == 0) {
+                addSuccessLabel.setText("num of Fabric is 0 !");
+                account.logSave("Error", "num of Fabric is 0 ");
+            } else {
+                addSuccessLabel.setText("capacity of store is not enough");
+                account.logSave("Error", "capacity of store is not enough ");
+            }
+        }
     }
 
     public void pocketMilkTruckload( ) {
+        if (instore) {
+            if (!truck.isGo && manager.truckLoad("PocketMilk")) {
+                addSuccessLabel.setText("1 PocketMilk added to truck");
+                account.logSave("Info", "1 PocketMilk added to truck");
+                pocketMilkNumLabel.setText(String.valueOf(store.numProduct(ProductType.POCKET_MILK)));
+                capacityLabel.setText(String.valueOf(store.capacity));
+            } else if (truck.isGo) {
+                addSuccessLabel.setText("truck is not ready");
+                account.logSave("Error", "truck is not ready");
+            } else if (store.numProduct(ProductType.POCKET_MILK) == 0) {
+                addSuccessLabel.setText("num of PocketMilk is 0 !");
+                account.logSave("Error", "num of PocketMilk is 0 ");
+            } else {
+                addSuccessLabel.setText("capacity of truck is not enough");
+                account.logSave("Error", "capacity of truck is not enough ");
+            }
+        }else if (intruck){
+            if (!truck.isGo && manager.truckUnLoad("PocketMilk")) {
+                addSuccessLabel.setText("1 PocketMilk unLoaded");
+                account.logSave("Info", "1 PocketMilk unLoaded");
+                pocketMilkNumLabel.setText(String.valueOf(truck.numProduct(ProductType.POCKET_MILK)));
+                capacityLabel.setText(String.valueOf(truck.capacity));
+            } else if (truck.isGo) {
+                addSuccessLabel.setText("truck is not ready");
+                account.logSave("Error", "truck is not ready");
+            } else if (truck.numProduct(ProductType.POCKET_MILK) == 0) {
+                addSuccessLabel.setText("num of PocketMilk is 0 !");
+                account.logSave("Error", "num of PocketMilk is 0 ");
+            } else {
+                addSuccessLabel.setText("capacity of store is not enough");
+                account.logSave("Error", "capacity of store is not enough ");
+            }
+        }
     }
 
     public void breadTruckload( ) {
+        if (instore) {
+            if (!truck.isGo && manager.truckLoad("Bread")) {
+                addSuccessLabel.setText("1 Bread added to truck");
+                account.logSave("Info", "1 Bread added to truck");
+                breadNumLabel.setText(String.valueOf(store.numProduct(ProductType.BREAD)));
+                capacityLabel.setText(String.valueOf(store.capacity));
+            } else if (truck.isGo) {
+                addSuccessLabel.setText("truck is not ready");
+                account.logSave("Error", "truck is not ready");
+            } else if (store.numProduct(ProductType.BREAD) == 0) {
+                addSuccessLabel.setText("num of Bread is 0 !");
+                account.logSave("Error", "num of Bread is 0 ");
+            } else {
+                addSuccessLabel.setText("capacity of truck is not enough");
+                account.logSave("Error", "capacity of truck is not enough ");
+            }
+        }else if (intruck){
+            if (!truck.isGo && manager.truckUnLoad("Bread")) {
+                addSuccessLabel.setText("1 Bread unLoaded");
+                account.logSave("Info", "1 Bread unLoaded");
+                breadNumLabel.setText(String.valueOf(truck.numProduct(ProductType.BREAD)));
+                capacityLabel.setText(String.valueOf(truck.capacity));
+            } else if (truck.isGo) {
+                addSuccessLabel.setText("truck is not ready");
+                account.logSave("Error", "truck is not ready");
+            } else if (truck.numProduct(ProductType.BREAD) == 0) {
+                addSuccessLabel.setText("num of Bread is 0 !");
+                account.logSave("Error", "num of Bread is 0 ");
+            } else {
+                addSuccessLabel.setText("capacity of store is not enough");
+                account.logSave("Error", "capacity of store is not enough ");
+            }
+        }
     }
 
     public void clothTruckload( ) {
+        if (instore) {
+            if (!truck.isGo && manager.truckLoad("Cloth")) {
+                addSuccessLabel.setText("1 Cloth added to truck");
+                account.logSave("Info", "1 Cloth added to truck");
+                clothNumLabel.setText(String.valueOf(store.numProduct(ProductType.CLOTH)));
+                capacityLabel.setText(String.valueOf(store.capacity));
+            } else if (truck.isGo) {
+                addSuccessLabel.setText("truck is not ready");
+                account.logSave("Error", "truck is not ready");
+            } else if (store.numProduct(ProductType.CLOTH) == 0) {
+                addSuccessLabel.setText("num of Cloth is 0 !");
+                account.logSave("Error", "num of Cloth is 0 ");
+            } else {
+                addSuccessLabel.setText("capacity of truck is not enough");
+                account.logSave("Error", "capacity of truck is not enough ");
+            }
+        }else if (intruck){
+            if (!truck.isGo && manager.truckUnLoad("Cloth")) {
+                addSuccessLabel.setText("1 Cloth unLoaded");
+                account.logSave("Info", "1 Cloth unLoaded");
+                clothNumLabel.setText(String.valueOf(truck.numProduct(ProductType.CLOTH)));
+                capacityLabel.setText(String.valueOf(truck.capacity));
+            } else if (truck.isGo) {
+                addSuccessLabel.setText("truck is not ready");
+                account.logSave("Error", "truck is not ready");
+            } else if (truck.numProduct(ProductType.CLOTH) == 0) {
+                addSuccessLabel.setText("num of Cloth is 0 !");
+                account.logSave("Error", "num of Cloth is 0 ");
+            } else {
+                addSuccessLabel.setText("capacity of store is not enough");
+                account.logSave("Error", "capacity of store is not enough ");
+            }
+        }
     }
 
     public void icecreamTruckload( ) {
+        if (instore) {
+            if (!truck.isGo && manager.truckLoad("Icecream")) {
+                addSuccessLabel.setText("1 Icecream added to truck");
+                account.logSave("Info", "1 Icecream added to truck");
+                icecreamNumLabel.setText(String.valueOf(store.numProduct(ProductType.ICE_CREAM)));
+                capacityLabel.setText(String.valueOf(store.capacity));
+            } else if (truck.isGo) {
+                addSuccessLabel.setText("truck is not ready");
+                account.logSave("Error", "truck is not ready");
+            } else if (store.numProduct(ProductType.ICE_CREAM) == 0) {
+                addSuccessLabel.setText("num of Icecream is 0 !");
+                account.logSave("Error", "num of Icecream is 0 ");
+            } else {
+                addSuccessLabel.setText("capacity of truck is not enough");
+                account.logSave("Error", "capacity of truck is not enough ");
+            }
+        }else if (intruck){
+            if (!truck.isGo && manager.truckUnLoad("Icecream")) {
+                addSuccessLabel.setText("1 Icecream unLoaded");
+                account.logSave("Info", "1 Icecream unLoaded");
+                icecreamNumLabel.setText(String.valueOf(truck.numProduct(ProductType.ICE_CREAM)));
+                capacityLabel.setText(String.valueOf(truck.capacity));
+            } else if (truck.isGo) {
+                addSuccessLabel.setText("truck is not ready");
+                account.logSave("Error", "truck is not ready");
+            } else if (truck.numProduct(ProductType.ICE_CREAM) == 0) {
+                addSuccessLabel.setText("num of Icecream is 0 !");
+                account.logSave("Error", "num of Icecream is 0 ");
+            } else {
+                addSuccessLabel.setText("capacity of store is not enough");
+                account.logSave("Error", "capacity of store is not enough ");
+            }
+        }
+    }
+
+    public void lionTruckload() {
+        if (instore) {
+            if (!truck.isGo && manager.truckLoad("Lion")) {
+                addSuccessLabel.setText("1 Lion added to truck");
+                account.logSave("Info", "1 Lion added to truck");
+                lionNumLabel.setText(String.valueOf(store.numProduct(AnimalType.LION)));
+                capacityLabel.setText(String.valueOf(store.capacity));
+            } else if (truck.isGo) {
+                addSuccessLabel.setText("truck is not ready");
+                account.logSave("Error", "truck is not ready");
+            } else if (store.numProduct(AnimalType.LION) == 0) {
+                addSuccessLabel.setText("num of Lion is 0 !");
+                account.logSave("Error", "num of Lion is 0 ");
+            } else {
+                addSuccessLabel.setText("capacity of truck is not enough");
+                account.logSave("Error", "capacity of truck is not enough ");
+            }
+        }else if (intruck){
+            if (!truck.isGo && manager.truckUnLoad("Lion")) {
+                addSuccessLabel.setText("1 Lion unLoaded");
+                account.logSave("Info", "1 Lion unLoaded");
+                lionNumLabel.setText(String.valueOf(truck.numProduct(AnimalType.LION)));
+                capacityLabel.setText(String.valueOf(truck.capacity));
+            } else if (truck.isGo) {
+                addSuccessLabel.setText("truck is not ready");
+                account.logSave("Error", "truck is not ready");
+            } else if (truck.numProduct(AnimalType.LION) == 0) {
+                addSuccessLabel.setText("num of Lion is 0 !");
+                account.logSave("Error", "num of Lion is 0 ");
+            } else {
+                addSuccessLabel.setText("capacity of store is not enough");
+                account.logSave("Error", "capacity of store is not enough ");
+            }
+        }
+    }
+
+    public void bearTruckload( ) {
+        if (instore) {
+            if (!truck.isGo && manager.truckLoad("Bear")) {
+                addSuccessLabel.setText("1 Bear added to truck");
+                account.logSave("Info", "1 Bear added to truck");
+                bearNumLabel.setText(String.valueOf(store.numProduct(AnimalType.BEAR)));
+                capacityLabel.setText(String.valueOf(store.capacity));
+            } else if (truck.isGo) {
+                addSuccessLabel.setText("truck is not ready");
+                account.logSave("Error", "truck is not ready");
+            } else if (store.numProduct(AnimalType.BEAR) == 0) {
+                addSuccessLabel.setText("num of Bear is 0 !");
+                account.logSave("Error", "num of Bear is 0 ");
+            } else {
+                addSuccessLabel.setText("capacity of truck is not enough");
+                account.logSave("Error", "capacity of truck is not enough ");
+            }
+        }else if (intruck){
+            if (!truck.isGo && manager.truckUnLoad("Bear")) {
+                addSuccessLabel.setText("1 Bear unLoaded");
+                account.logSave("Info", "1 Bear unLoaded");
+                bearNumLabel.setText(String.valueOf(truck.numProduct(AnimalType.BEAR)));
+                capacityLabel.setText(String.valueOf(truck.capacity));
+            } else if (truck.isGo) {
+                addSuccessLabel.setText("truck is not ready");
+                account.logSave("Error", "truck is not ready");
+            } else if (truck.numProduct(AnimalType.BEAR) == 0) {
+                addSuccessLabel.setText("num of Bear is 0 !");
+                account.logSave("Error", "num of Bear is 0 ");
+            } else {
+                addSuccessLabel.setText("capacity of store is not enough");
+                account.logSave("Error", "capacity of store is not enough ");
+            }
+        }
+    }
+
+    public void tigerTruckload( ) {
+        if (instore) {
+            if (!truck.isGo && manager.truckLoad("Tiger")) {
+                addSuccessLabel.setText("1 Tiger added to truck");
+                account.logSave("Info", "1 Tiger added to truck");
+                tigerNumlabel.setText(String.valueOf(store.numProduct(AnimalType.TIGER)));
+                capacityLabel.setText(String.valueOf(store.capacity));
+            } else if (truck.isGo) {
+                addSuccessLabel.setText("truck is not ready");
+                account.logSave("Error", "truck is not ready");
+            } else if (store.numProduct(AnimalType.TIGER) == 0) {
+                addSuccessLabel.setText("num of Tiger is 0 !");
+                account.logSave("Error", "num of Tiger is 0 ");
+            } else {
+                addSuccessLabel.setText("capacity of truck is not enough");
+                account.logSave("Error", "capacity of truck is not enough ");
+            }
+        }else if (intruck){
+            if (!truck.isGo && manager.truckUnLoad("Tiger")) {
+                addSuccessLabel.setText("1 Tiger unLoaded");
+                account.logSave("Info", "1 Tiger unLoaded");
+                tigerNumlabel.setText(String.valueOf(truck.numProduct(AnimalType.TIGER)));
+                capacityLabel.setText(String.valueOf(truck.capacity));
+            } else if (truck.isGo) {
+                addSuccessLabel.setText("truck is not ready");
+                account.logSave("Error", "truck is not ready");
+            } else if (truck.numProduct(AnimalType.TIGER) == 0) {
+                addSuccessLabel.setText("num of Tiger is 0 !");
+                account.logSave("Error", "num of Tiger is 0 ");
+            } else {
+                addSuccessLabel.setText("capacity of store is not enough");
+                account.logSave("Error", "capacity of store is not enough ");
+            }
+        }
+    }
+
+    public void backToGame( ) {
+        storeListPane.setVisible(false);
+        animalTransition.playFromStart();
+    }
+
+    public void truckGo( ) {
+        if (truck.isGo){
+            addSuccessLabel.setText("truck is not ready");
+            account.logSave("Error", "truck is not ready");
+        }else if (truck.capacity==0){
+            addSuccessLabel.setText("truck is empty");
+            account.logSave("Error", "truck is empty");
+        }else {
+            truck.isGo=true;
+            truckImg.setVisible(false);
+            storeListPane.setVisible(false);
+            animalTransition.playFromStart();
+        }
+    }
+
+    public void end() throws IOException {
+        account.logSave("Info", "level complete successfully");
+        account.setCompleteLevels(account.getCompleteLevels()+1);
+        if (manager.time<=manager.step.maxTime)
+        account.setCoins(manager.step.prize);
+        else
+            account.setCoins(0);
+        listOfAccounts.save();
+        stage.close();
+        Main main = new Main();
+        main.goToMenu();
     }
 
 

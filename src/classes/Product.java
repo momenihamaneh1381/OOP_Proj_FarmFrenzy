@@ -1,5 +1,7 @@
 package classes;
 
+import javafx.scene.image.Image;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 
 public class Product extends Rectangle implements Turn{
@@ -36,7 +38,7 @@ public class Product extends Rectangle implements Turn{
     }
 
     public Product(ProductType productType , int centerx , int centery) {
-        super(centerx - 10 , centery - 10 , 20 , 20);
+        super(centerx - 20 , centery - 20 , 40 , 40);
         name = String.valueOf(productType);
         this.centerX = centerx;
         time=0;
@@ -103,5 +105,18 @@ public class Product extends Rectangle implements Turn{
     }
     public boolean intersect(int x0 , int y0){
         return x0>=(centerX-20)&&x0<=(centerX+20)&&y0>=(centerY-20)&&y0<=(centerY+20);
+    }
+    public void setBackGround(String url){
+        this.setFill(new ImagePattern(new Image(getClass().getResource(url).toExternalForm())));
+//        this.setFill;
+    }
+
+    public String getProductType() {
+        if(productType==ProductType.ICE_CREAM){
+            return "icecream";
+        }else if (productType==ProductType.POCKET_MILK){
+            return "pocketMilk";
+        }else
+        return productType.toString().toLowerCase();
     }
 }

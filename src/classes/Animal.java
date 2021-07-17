@@ -47,7 +47,7 @@ public class Animal extends Rectangle {
         return n;
     }
 
-    AnimalType animalType;
+    public AnimalType animalType;
 
     public String getUrl() {
         // TODO: 7/14/2021
@@ -75,12 +75,16 @@ public class Animal extends Rectangle {
 //        theta = 45;
 //        x= 0;
 //        y =0;
-        x =21+  random.nextInt(400);
-        y =21+  random.nextInt(247);
-        super.setX(x-20);
-        super.setY(y-20);
-        super.setWidth(40);
-        super.setHeight(40);
+        x =61+  random.nextInt(360);
+        y =61+  random.nextInt(210);
+//        super.setX(x-20);
+//        super.setY(y-20);
+//        super.setWidth(40);
+//        super.setHeight(40);
+        super.setX(x-30);
+        super.setY(y-30);
+        super.setWidth(60);
+        super.setHeight(60);
     }
 
     public void setTheta(int theta) {
@@ -109,7 +113,6 @@ public class Animal extends Rectangle {
 
     public void setBackGround(String url){
         this.setFill(new ImagePattern(new Image(getClass().getResource(url).toExternalForm())));
-
 //        this.setFill;
     }
 }
