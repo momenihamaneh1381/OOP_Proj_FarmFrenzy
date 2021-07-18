@@ -33,6 +33,9 @@ public class Manager {
     public Step step;
     Label wellSuccessLabel , storeSuccess , storeFail  , eggPowderPlantLabel, weavingLabel , pocketMilkLabel
             , bakeryLabel ,  sewingLabel , icecreamLabel , incubatorLabel , coinLabel ,  timeLabel;
+    ImageView starProductImg;
+    ImageView starCionImg;
+    ImageView starDomesticImg;
     public EggPowderPlant eggPowderPlant;
     public WeavingFactory weavingFactory ;
     public PocketMilkFactory pocketMilkFactory;
@@ -44,8 +47,12 @@ public class Manager {
     public Manager(Account account , Pane pane  , Label wellSuccessLabel , Label storeSuccess  ,
                    Label storeFail , Label eggPowderPlantLabel ,Label weavingLabel ,Label pocketMilkLabel ,
                    Label bakeryLabel ,Label  sewingLabel ,Label icecreamLabel , Label incubatorLabel ,
-                   ImageView truckImg , Label coinLabel ,Label timeLabel) {
+                   ImageView truckImg , Label coinLabel ,Label timeLabel , ImageView starProductImg, ImageView starCionImg,
+                           ImageView starDomesticImg) {
         time = 0;
+        this.starCionImg = starCionImg;
+        this.starDomesticImg = starDomesticImg;
+        this.starProductImg = starProductImg;
         this.timeLabel = timeLabel;
         this.coinLabel = coinLabel;
         this.truckImg = truckImg;
@@ -660,10 +667,7 @@ public class Manager {
         return true;
     }
 
-//    public boolean turn(int n ,Tasks tasks) {
-//        account.logSave("Info" , "turned "+n0+" successfuly");
-//        int n = Integer.parseInt(n0);
-        public boolean turn(int n ) {
+    public boolean turn(int n ) {
         ArrayList<DomesticAnimal> diedDomesticAnimal = new ArrayList<>();
         ArrayList<WildAnimal> diedWildAnimals = new ArrayList<>();
         ArrayList<Product> diedProducts = new ArrayList<>();
@@ -905,6 +909,7 @@ public class Manager {
 
         }return false;
     }
+
     public boolean plaesePlant(){
         if (grasses.isEmpty()&&existHungry()){
             return true;
@@ -1165,6 +1170,12 @@ public class Manager {
 
     public boolean endGame( ) {
         // TODO: 6/19/2021
+        if (goalCoins(step)){
+        }
+        if (goalDomesticAnimal(step)){
+        }
+        if (goalProduct(step)){
+        }
         if (goalCoins(step)&&goalDomesticAnimal(step)&&goalProduct(step))
             return true;
         return false;
@@ -1196,16 +1207,20 @@ public class Manager {
         if (step.goalCoin!=0){
 //            if (maxCoin<account.coins)
 //            maxCoin = account.coins;
-            if (account.coins>= step.goalCoin)
+            if (account.coins>= step.goalCoin){
+                starCionImg.setVisible(true);
                 return true;
+            }
             return false;
         }
         return true;
     }
     public boolean goalDomesticAnimal(Step step){
         if (step.goalDomesticAnimalName.length()!=0){
-            if (numOfDomesticAnimal(getanimalType(step.goalDomesticAnimalName))>= step.goalDomesticAnimalNum)
+            if (goalDomesticNum>= step.goalDomesticAnimalNum){
+                starDomesticImg.setVisible(true);
                 return true;
+            }
             return false;
         }
         return true;
@@ -1214,8 +1229,10 @@ public class Manager {
         if (step.goalProductName.length()!=0){
 //            if (maxProduct <numOfProduct(tasks.goalProduct.productType))
 //            maxProduct = numOfProduct(tasks.goalProduct.productType);
-            if (numOfProduct(getProductType(step.goalProductName))>= step.goalProductNum)
+            if (goalProductNum>= step.goalProductNum) {
+                 starProductImg.setVisible(true);
                 return true;
+            }
             return false;
         }
         return true;
@@ -1286,7 +1303,7 @@ public class Manager {
         for (Product product : products) {
             if (product.intersect(x,y)){
                 if (store.canAdd(product)){
-                    if (step.goalProductName.length()!=0&&step.goalProductName.equalsIgnoreCase(String.valueOf(product.productType)))
+                    if (step.goalProductName.length()!=0&&step.goalProductName.equalsIgnoreCase(String.valueOf(product.getProductType())))
                         goalProductNum++;
                     store.add(product);
                     died.add(product);

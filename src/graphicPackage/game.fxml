@@ -12,7 +12,7 @@
    <children>
       <ImageView fitHeight="639.0" fitWidth="851.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../source/groundMain (1).jpg" />
+            <Image url="@../source/groundMain2.jpg" />
          </image>
       </ImageView>
       <ImageView fx:id="truckImg" fitHeight="106.0" fitWidth="136.0" layoutX="182.0" layoutY="521.0" onMouseClicked="#truckClick" pickOnBounds="true" preserveRatio="true">
@@ -36,9 +36,9 @@
          </font>
       </Label>
       <Pane fx:id="gamePane" layoutX="211.0" layoutY="223.0" prefHeight="270.0" prefWidth="423.0" />
-      <ImageView fx:id="wellRectImg" fitHeight="94.0" fitWidth="193.0" layoutX="380.0" layoutY="79.0" onMouseClicked="#welling" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="wellRectImg" fitHeight="120.0" fitWidth="116.0" layoutX="398.0" layoutY="61.0" onMouseClicked="#welling" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../source/well2.jpg" />
+            <Image url="@../source/well.png" />
          </image>
       </ImageView>
       <ImageView fx:id="buyHenImg" fitHeight="68.0" fitWidth="63.0" layoutX="6.0" layoutY="-2.0" onMouseClicked="#buyHen" pickOnBounds="true" preserveRatio="true">
@@ -186,6 +186,21 @@
       <Label fx:id="incubatorLabel" alignment="CENTER" layoutX="268.0" layoutY="94.0" prefHeight="25.0" prefWidth="136.0">
          <font>
             <Font name="System Bold" size="15.0" />
+         </font>
+      </Label>
+      <Label fx:id="maxtimeLabel" alignment="CENTER" layoutX="739.0" layoutY="601.0" prefHeight="25.0" prefWidth="136.0" text="Label" textFill="GOLD">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </Label>
+      <Label fx:id="timeLabel" alignment="CENTER" layoutX="690.0" layoutY="601.0" prefHeight="25.0" prefWidth="83.0" text="0" textFill="WHITE">
+         <font>
+            <Font size="13.0" />
+         </font>
+      </Label>
+      <Label fx:id="prizeLabel" alignment="CENTER" layoutX="699.0" layoutY="564.0" prefHeight="25.0" prefWidth="136.0" text="Label" textFill="GOLD">
+         <font>
+            <Font size="15.0" />
          </font>
       </Label>
       <AnchorPane fx:id="storeListPane" layoutX="86.0" layoutY="59.0" prefHeight="423.0" prefWidth="718.0" visible="false">
@@ -345,17 +360,22 @@
                   <Font size="15.0" />
                </font>
             </Label>
+            <ImageView fx:id="starProductImg" fitHeight="30.0" fitWidth="28.0" layoutX="459.0" layoutY="256.0" pickOnBounds="true" preserveRatio="true" visible="false">
+               <image>
+                  <Image url="@../source/star.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="starCionImg" fitHeight="30.0" fitWidth="28.0" layoutX="459.0" layoutY="355.0" pickOnBounds="true" preserveRatio="true" visible="false">
+               <image>
+                  <Image url="@../source/star.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="starDomesticImg" fitHeight="30.0" fitWidth="28.0" layoutX="459.0" layoutY="307.0" pickOnBounds="true" preserveRatio="true" visible="false">
+               <image>
+                  <Image url="@../source/star.png" />
+               </image>
+            </ImageView>
          </children>
       </AnchorPane>
-      <Label fx:id="maxtimeLabel" alignment="CENTER" layoutX="739.0" layoutY="601.0" prefHeight="25.0" prefWidth="136.0" text="Label" textFill="GOLD">
-         <font>
-            <Font name="System Bold" size="13.0" />
-         </font>
-      </Label>
-      <Label fx:id="timeLabel" alignment="CENTER" layoutX="690.0" layoutY="601.0" prefHeight="25.0" prefWidth="83.0" text="0" textFill="WHITE">
-         <font>
-            <Font size="13.0" />
-         </font>
-      </Label>
    </children>
 </AnchorPane>

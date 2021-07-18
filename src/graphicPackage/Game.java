@@ -1,11 +1,9 @@
 package graphicPackage;
 
-import animations.AnimalTransition;
-import animations.EggpowderTransition;
+import animations.*;
 import classes.*;
 
 
-import com.google.gson.Gson;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -75,30 +73,25 @@ public class Game extends Application {
     public Label goalProductLabel;
     public Label goalCoinLabel;
     public Label goalDomesticAnimalLabel;
+    public Label prizeLabel;
+    public ImageView starProductImg;
+    public ImageView starCionImg;
+    public ImageView starDomesticImg;
     AnimalTransition animalTransition;
+    WellTransition wellTransition ;
     boolean instore , intruck;
-//    ArrayList<Animal>animals ;
-//    ArrayList<Grass> grasses ;
-//    ArrayList<DomesticAnimal> domesticAnimals;
-//    ArrayList<Cat> cats;
-//    ArrayList<Hound> hounds;
-//    ArrayList<WildAnimal> wildAnimals;
-//    ArrayList<Product> products;
-//    ArrayList<Factory> factories;
-//    ArrayList<Grass> grasses;
-
-
     WateringSystem wateringSystem ;
     Truck truck;
     Store store;
     Manager manager;
     Account account;
     ListOfAccounts listOfAccounts;
-    Missions missions ;
-    Tasks tasks;
     public static int level;
-//    Stage stageMenu;
-//    int flag= 0;
+    EggpowderTransition eggpowderTransition ;
+    WeavingTransition weavingTransition ;
+    BakeryTransition bakeryTransition;
+    SewingTransition sewingTransition;
+    IcecreamTransition icecreamTransition;
 
 
     @FXML
@@ -152,9 +145,17 @@ public class Game extends Application {
 
         manager = new Manager(account , gamePane , wellSuccessLabel , storeSuccess , storeFail , eggpowderLabel
                 , weavingLabel , pocketMilkLabel , bakeryLabel , sewingLabel , icecreamLabel , incubatorLabel
-                , truckImg , coinLabel , timeLabel);
+                , truckImg , coinLabel , timeLabel , starProductImg,starCionImg ,starDomesticImg);
         account.setCoins(account.getCoins()+manager.step.initCoin);
         maxtimeLabel.setText(String.valueOf(manager.step.maxTime));
+        prizeLabel.setText("prize : "+String.valueOf(manager.step.prize));
+        wellTransition = new WellTransition(wellRectImg);
+        eggpowderTransition = new EggpowderTransition(manager.eggPowderPlant.level , eggPowderPlantImg);
+         weavingTransition = new WeavingTransition(weavingImg , manager.weavingFactory.level);
+         bakeryTransition = new BakeryTransition(bakeryImg , manager.bakery.level);
+         sewingTransition = new SewingTransition(sewingImg , manager.sewingFactory.level);
+         icecreamTransition = new IcecreamTransition(icecreamImg , manager.icecreamFactory.level);
+
         if (manager.step.goalCoin==0)
         goalCoinLabel.setVisible(false);
         else {
@@ -173,22 +174,12 @@ public class Game extends Application {
             goalProductLabel.setVisible(true);
             goalProductLabel.setText(manager.step.goalProductName+" : "+manager.step.goalProductNum);
         }
-//        manager.missionRead(missions);
-//        tasks = missions.tasks[level-1];
-//        account.setCoins(account.getCoins()+ tasks.initialCoins) ;
-        // TODO: 7/14/2021
         coinLabel.setText(String.valueOf(account.getCoins()));
-//        domesticAnimals =manager.domesticAnimals;
-//        animals = new ArrayList<>();
-//        grasses = manager.grasses;
         truck = Truck.getInstance();
         store = Store.getInstanceStore();
         wateringSystem = WateringSystem.getInstanceWateringSystem();
-//        Hen hen = new Hen(gamePane);
-//        animals.add(hen);
-//        gamePane.getChildren().add(hen);
         animalTransition = new AnimalTransition(manager , lowCoinLabel , lowWellLabel , storeSuccess , storeFail , this);
-        animalTransition.play();// TODO: 7/14/2021 in animate
+        animalTransition.play();
         gamePane.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -214,7 +205,6 @@ public class Game extends Application {
                     account = account1;
             }
         } catch (FileNotFoundException e) {
-
         }
     }
 
@@ -229,36 +219,18 @@ public class Game extends Application {
             lowWellLabel.setText("well is empty!");
             account.logSave("Error" , "plant Unsuccessfully! well is empty");
         }
-        // TODO: 7/13/2021
     }
 
     public void welling(){
         if(manager.well()) {
             wellSuccessLabel.setText("plaese wait 3 Sec...");
             account.logSave("Info", "well successfuly");
+            wellTransition.play();
         }
     }
 
-
-//    public void buyAnimal( ) {
-//        Hen hen  = new Hen(gamePane);
-//        gamePane.getChildren().add(hen);
-//        animals.add(hen);
-//        AnimalTransition animalTransition = new AnimalTransition(animals);
-//        animalTransition.play();
-//    }
-
-
     @Override
     public void start(Stage primaryStage) throws Exception {
-//        Parent root = FXMLLoader.load(getClass().getResource("game.fxml"));
-////        Scene menuScene = new Scene(root , 600 ,400);
-////        Scene menuScene = new Scene(root , 1366 ,700);
-//        Scene menuScene = new Scene(root , 851 ,639);
-////        stage.setResizable(false);
-//        stage.setScene(menuScene);
-//        stage.setTitle("Game");
-////        stage.setFullScreen(true);
         stage = primaryStage;
         Parent root = FXMLLoader.load(getClass().getResource("game.fxml"));
         primaryStage.setTitle("Game");
@@ -281,14 +253,11 @@ public class Game extends Application {
         }else {
             lowCoinLabel.setText("Coin is not enough");
             account.logSave("Error" , "buy not successfuly! coins is not enough");
-            // TODO: 7/14/2021
         }
     }
 
     private void animate(Animal animal) {
-//        animals.add(animal);
         gamePane.getChildren().add(animal);
-//        animalTransition.play();
     }
 
     public void buyCat( ) {
@@ -301,7 +270,6 @@ public class Game extends Application {
         }else {
             lowCoinLabel.setText("Coin is not enough");
             account.logSave("Error" , "buy not successfuly! coins is not enough");
-            // TODO: 7/14/2021
         }
     }
 
@@ -315,7 +283,6 @@ public class Game extends Application {
             }else {
                 lowCoinLabel.setText("Coin is not enough");
                 account.logSave("Error" , "buy not successfuly! coins is not enough");
-                // TODO: 7/14/2021
             }
     }
 
@@ -329,7 +296,6 @@ public class Game extends Application {
         }else {
             lowCoinLabel.setText("Coin is not enough");
             account.logSave("Error" , "buy not successfuly! coins is not enough");
-            // TODO: 7/14/2021
         }
     }
 
@@ -343,39 +309,27 @@ public class Game extends Application {
         }else {
             lowCoinLabel.setText("Coin is not enough");
             account.logSave("Error" , "buy not successfuly! coins is not enough");
-            // TODO: 7/14/2021
         }
     }
 
     public void menu( )   {
-        animalTransition.pause();
+        animationsPause();
         menuPauseImg.setVisible(true);
         resumeBtn.setVisible(true);
-//        stageMenu = new Stage();
-//        FXMLLoader fxmlLoader = new FXMLLoader();
-//        Parent root = fxmlLoader.load(getClass().getResource("menuGame.fxml").openStream());
-//        stageMenu.setTitle("Menu");
-//        Scene loginOrSignUp = new Scene(root , 600 , 345);
-//        stageMenu.setScene(loginOrSignUp);
-//        stageMenu.showAndWait();
     }
     public void resume( ){
-//        stageMenu.close();
         menuPauseImg.setVisible(false);
         resumeBtn.setVisible(false);
-        animalTransition.playFromStart();
+        animationsResume();
     }
 
     public void workEggPowderPlant(){
         if (manager.work("eggPowderPlant")){
             eggpowderLabel.setText("wait 4 Sec...");
-//            EggpowderTransition eggpowderTransition = new EggpowderTransition(manager , eggPowderPlantImg);
-//            eggpowderTransition.play();
-            // TODO: 7/15/2021
+            eggpowderTransition.play();
         }else {
             account.logSave("Error" , "EGG is not enough to work EGG POWDER PLANT");
         }
-
     }
     public void buildEggPowderPlant( ) {
         if (!manager.eggPowderPlant.isBiuld) {
@@ -428,7 +382,6 @@ public class Game extends Application {
             account.logSave("Info", "WEAVING FACTORY upgrade successfully");
             upgradeWeavingBtn.setVisible(false);
             weavingImg.setImage(new Image("source/factory/weavingFactoryL2.png"));
-            // TODO: 7/16/2021 image
         }else if (!manager.weavingFactory.work){
             account.logSave("Error" , "coins is not enough");
             lowCoinLabel.setText("Coin is not enough");
@@ -438,7 +391,7 @@ public class Game extends Application {
     public void workWeaving(){
         if (manager.work("weavingFactory")){
             weavingLabel.setText("wait 5 Sec...");
-            // TODO: 7/15/2021
+            weavingTransition.play();
         }else {
             account.logSave("Error" , "WING is not enough to work WEAVING FACTORY");
         }
@@ -466,7 +419,6 @@ public class Game extends Application {
             account.logSave("Info", "POCKET MILK FACTORY upgrade successfully");
             upgradePocketMilkBtn.setVisible(false);
             pocketMilkImg.setImage(new Image("source/factory/pocketMilkL2.png"));
-            // TODO: 7/16/2021  image
         }else if (!manager.pocketMilkFactory.work){
             account.logSave("Error" , "coins is not enough");
             lowCoinLabel.setText("Coin is not enough");
@@ -504,7 +456,6 @@ public class Game extends Application {
             account.logSave("Info", "BAKERY upgrade successfully");
             upgradeBakeryBtn.setVisible(false);
             bakeryImg.setImage(new Image("source/factory/bakeryL2.png"));
-            // TODO: 7/16/2021  image
         }else if (!manager.bakery.work){
             account.logSave("Error" , "coins is not enough");
             lowCoinLabel.setText("Coin is not enough");
@@ -514,7 +465,7 @@ public class Game extends Application {
     public void workBakery( ) {
         if (manager.work("bakery")){
             bakeryLabel.setText("wait 5 Sec...");
-            // TODO: 7/15/2021
+            bakeryTransition.play();
         }else {
             account.logSave("Error" , "POWDER is not enough to work BAKERY");
         }
@@ -543,7 +494,6 @@ public class Game extends Application {
             account.logSave("Info", "SEWING FACTORY upgrade successfully");
             upgradeSewingBtn.setVisible(false);
             sewingImg.setImage(new Image("source/factory/sewingFactoryL2.png"));
-            // TODO: 7/16/2021  image
         }else if (!manager.sewingFactory.work){
             account.logSave("Error" , "coins is not enough");
             lowCoinLabel.setText("Coin is not enough");
@@ -553,7 +503,7 @@ public class Game extends Application {
     public void workSewingFactory( ) {
         if (manager.work("sewingFactory")){
             sewingLabel.setText("wait 6 Sec...");
-            // TODO: 7/15/2021
+            sewingTransition.play();
         }else {
             account.logSave("Error" , "FABRIC is not enough to work SEWING FACTORY");
         }
@@ -581,7 +531,6 @@ public class Game extends Application {
             account.logSave("Info", "ICECREAM FACTORY upgrade successfully");
             upgradeIcecreamBtn.setVisible(false);
             icecreamImg.setImage(new Image("source/factory/icecreamL2.png"));
-            // TODO: 7/16/2021  image
         }else if (!manager.icecreamFactory.work){
             account.logSave("Error" , "coins is not enough");
             lowCoinLabel.setText("Coin is not enough");
@@ -591,7 +540,7 @@ public class Game extends Application {
     public void workIcecream( ) {
         if (manager.work("icecreamFactory")){
             icecreamLabel.setText("wait 7 Sec...");
-            // TODO: 7/15/2021
+            icecreamTransition.play();
         }else {
             account.logSave("Error" , "POCKET MILK is not enough to work ICECREAM FACTORY");
         }
@@ -605,13 +554,6 @@ public class Game extends Application {
             account.logSave("Error" , "EGG is not enough to work INCUBATOR");
         }
     }
-
-
-
-//    private void showStore(){
-//
-//        // TODO: 7/15/2021
-//    }
 
     private void setLabelsStore(){
         eggNumLabel.setText(String.valueOf(store.numProduct(ProductType.EGG)));
@@ -647,23 +589,20 @@ public class Game extends Application {
         instore = true;
         intruck = false;
         capacityLabel.setText(String.valueOf(store.capacity));
-        animalTransition.pause();
+        animationsPause();
         truckGoBtn.setVisible(false);
         setLabelsStore();
         storeListPane.setVisible(true);
-        // TODO: 7/13/2021
     }
 
     public void truckClick( ) {
         instore = false;
         intruck = true;
         capacityLabel.setText(String.valueOf(truck.capacity));
-        animalTransition.pause();
+        animationsPause();
         storeListPane.setVisible(true);
         truckGoBtn.setVisible(true);
         setLabelsTruck();
-
-        // TODO: 7/13/2021
     }
 
 
@@ -1101,7 +1040,7 @@ public class Game extends Application {
 
     public void backToGame( ) {
         storeListPane.setVisible(false);
-        animalTransition.playFromStart();
+        animationsResume();
     }
 
     public void truckGo( ) {
@@ -1115,39 +1054,54 @@ public class Game extends Application {
             truck.isGo=true;
             truckImg.setVisible(false);
             storeListPane.setVisible(false);
-            animalTransition.playFromStart();
+            animationsResume();
         }
     }
 
     public void end() throws IOException {
         account.logSave("Info", "level complete successfully");
+        account.logSave("Info" , "game end in "+manager.time+" Sec");
+        if (level == account.getCompleteLevels())
         account.setCompleteLevels(account.getCompleteLevels()+1);
-        if (manager.time<=manager.step.maxTime)
-        account.setCoins(manager.step.prize);
+        if (manager.time<=manager.step.maxTime){
+            account.setCoins(manager.step.prize);
+            account.logSave("Info" , "you win "+manager.step.prize+" prize");
+        }
         else
             account.setCoins(0);
         listOfAccounts.save();
-        stage.close();
+        animalTransition.stop();
         Main main = new Main();
-        main.goToMenu();
+        main.goToMenu(stage);
     }
-
-
-//    public void newGame( ) throws IOException {
-//        stageMenu.close();
-//        stage = new Stage();
-//        Parent root = FXMLLoader.load(getClass().getResource("menuForm.fxml"));
-//        stage.setTitle("Menu");
-//        Scene loginOrSignUp = new Scene(root , 650 , 358);
-//        stage.setScene(loginOrSignUp);
-//        stage.show();
-//    }
-//    private void missionRead(){
-//        FileOperator fileOperator = new FileOperator();
-//        String json =  fileOperator.read("missions.json");
-//        Gson gson = new Gson();
-//        missions = new Missions(5);
-//        // convert JSON string to Mission object
-//        missions = gson.fromJson(json, Missions.class);
-//    }
+    private void animationsPause(){
+        animalTransition.pause();
+        if (manager.welling())
+        wellTransition.pause();
+        if (manager.eggPowderPlant.work)
+        eggpowderTransition.pause();
+        if (manager.weavingFactory.work)
+            weavingTransition.pause();
+        if (manager.bakery.work)
+            bakeryTransition.pause();
+        if (manager.sewingFactory.work)
+            sewingTransition.pause();
+        if (manager.icecreamFactory.work)
+            icecreamTransition.pause();
+    }
+    private void animationsResume(){
+        animalTransition.playFromStart();
+        if (manager.welling())
+        wellTransition.play();
+        if (manager.eggPowderPlant.work)
+        eggpowderTransition.play();
+        if (manager.weavingFactory.work)
+            weavingTransition.play();
+        if (manager.bakery.work)
+            bakeryTransition.play();
+        if (manager.sewingFactory.work)
+            sewingTransition.play();
+        if (manager.icecreamFactory.work)
+            icecreamTransition.play();
+    }
 }

@@ -7,10 +7,10 @@ import javafx.scene.image.ImageView;
 import javafx.util.Duration;
 
 public class EggpowderTransition extends Transition {
-    Manager manager;
+    public static int level;
     ImageView imageView;
-    public EggpowderTransition(Manager manager , ImageView imageView ) {
-        this.manager = manager;
+    public EggpowderTransition(int level , ImageView imageView ) {
+        this.level = level;
         this.imageView = imageView;
         this.setCycleDuration(Duration.millis(1000));
         this.setCycleCount(8);
@@ -18,7 +18,8 @@ public class EggpowderTransition extends Transition {
 
     @Override
     protected void interpolate(double v) {
-        int i = (int) Math.floor(v*3);
-        imageView.setImage(new Image("/source/factory/eggPowderPlant"+i+".png"));
+        int i = (int) Math.floor(v*5);
+        imageView.setImage(new Image("/source/factory/eggPowderPlant"+level+i+".png"));
     }
+
 }

@@ -1,5 +1,5 @@
 {
-  "goalProductName": "powder",
+  "goalProductName": "pocketMilk",
   "goalProductNum": 2,
   "goalDomesticAnimalName": "turkey",
   "goalDomesticAnimalNum": 2,
@@ -8,11 +8,11 @@
     "lion"
   ],
   "wildNum": [
-    2,
-    15
+    20,
+    35
   ],
   "initCoin": 1000,
   "prize": 200,
-  "maxTima": 40,
-  "goalCoin": 0
+  "maxTime": 55,
+  "goalCoin": 2000
 }

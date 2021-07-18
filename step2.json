@@ -13,6 +13,6 @@
   ],
   "initCoin": 1000,
   "prize": 200,
-  "maxTima": 40,
+  "maxTime": 40,
   "goalCoin": 0
 }

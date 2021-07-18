@@ -8,11 +8,11 @@
     "lion"
   ],
   "wildNum": [
-    2,
-    10
+    5,
+    20
   ],
   "initCoin": 500,
   "prize": 200,
-  "maxTima": 50,
-  "goalCoin": 1500
+  "maxTime": 50,
+  "goalCoin": 1000
 }

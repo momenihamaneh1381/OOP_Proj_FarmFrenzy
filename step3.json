@@ -1,18 +1,20 @@
 {
-  "goalProductName": "powder",
+  "goalProductName": "iceCream",
   "goalProductNum": 2,
-  "goalDomesticAnimalName": "turkey",
+  "goalDomesticAnimalName": "buffalo",
   "goalDomesticAnimalNum": 2,
   "wildNames": [
     "tiger",
+    "bear",
     "lion"
   ],
   "wildNum": [
     2,
-    15
+    15,
+    26
   ],
   "initCoin": 1000,
   "prize": 200,
-  "maxTima": 40,
-  "goalCoin": 0
+  "maxTime": 60,
+  "goalCoin": 100
 }

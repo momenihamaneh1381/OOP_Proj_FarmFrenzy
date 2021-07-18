@@ -67,8 +67,11 @@ public class Menu   {
                 labelFail.setVisible(true);
                 labelFail.setText("This level is lock!");
             }else {
-                FileWriter fileWriter = new FileWriter("username.txt" , true);
-                fileWriter.append("\n" +levelTxt.getText() );
+                File file = new File("username.txt");
+                Scanner scanner = new Scanner(file);
+                String username = scanner.next();
+                FileWriter fileWriter = new FileWriter("username.txt" , false);
+                fileWriter.write(username +"\n" +levelTxt.getText() );
                 fileWriter.close();
                 Main main = new Main();
 //                main.startGame();

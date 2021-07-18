@@ -55,6 +55,17 @@ public  class Main extends Application {
             stage.setX((primScreenBounds.getWidth() - stage.getWidth()) / 2);
             stage.setY((primScreenBounds.getHeight() - stage.getHeight()) / 2);
         }
+    public void goToMenu(Stage stage) throws IOException{
+        Main.stage = stage;
+        Parent root = FXMLLoader.load(getClass().getResource("MenuForm.fxml"));
+        Scene menuScene = new Scene(root , 650 ,365);
+        stage.setResizable(false);
+        stage.setScene(menuScene);
+        stage.setTitle("Menu");
+        Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
+        stage.setX((primScreenBounds.getWidth() - stage.getWidth()) / 2);
+        stage.setY((primScreenBounds.getHeight() - stage.getHeight()) / 2);
+    }
 
         public void closeScene(){
             stage.close();
