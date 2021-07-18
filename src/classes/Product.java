@@ -13,7 +13,6 @@ public class Product extends Rectangle implements Turn{
     int max_time;
     int time;
     int num = 1;
-    Store store = Store.getInstanceStore();
     ProductType productType;
 
     public int getNum() {
@@ -108,7 +107,6 @@ public class Product extends Rectangle implements Turn{
     }
     public void setBackGround(String url){
         this.setFill(new ImagePattern(new Image(getClass().getResource(url).toExternalForm())));
-//        this.setFill;
     }
 
     public String getProductType() {

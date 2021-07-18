@@ -76,5 +76,8 @@ public class Store {
         }
         return null;
     }
-
+    public void clear(){
+        wildAnimalsStoreList.clear();
+        productsStoreList.clear();
+    }
 }

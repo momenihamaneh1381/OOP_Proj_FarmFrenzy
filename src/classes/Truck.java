@@ -12,8 +12,6 @@ public class Truck implements Turn{
     ArrayList<WildAnimal>listOfWildAnimals;
     public int capacity;
 
-    // TODO: 6/18/2021 domesticAnimals beacase have not any capacity
-
     public static Truck getInstance(){
         if (instance==null)
             instance = new Truck();
@@ -29,7 +27,6 @@ public class Truck implements Turn{
     }
 
     public void transfer(){
-        // TODO: 6/14/2021
     }
 
     public void add(Product product) {

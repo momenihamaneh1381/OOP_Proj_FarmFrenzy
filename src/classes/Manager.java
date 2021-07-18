@@ -89,12 +89,6 @@ public class Manager {
         grasses = new ArrayList<>();
         wateringSystem = WateringSystem.getInstanceWateringSystem();
         this.pane = pane;
-
-        // TODO: 7/15/2021
-//        int [] a = {1};
-//        tasks = new Tasks(100 , a , 3000 , 50 , 200 );
-//        tasks.wildAnimals.add(new Tiger(pane));
-        // TODO: 7/15/2021 tasks & missions
         step = new Step();
         stepRead();
     }
@@ -104,39 +98,10 @@ public class Manager {
         String userListText = fileOperator.read("step"+ Game.level +".json");
         step = new Gson().fromJson(userListText, Step.class);
     }
-//    public void missionRead(Missions missions){
-////        FileOperator fileOperator = new FileOperator();
-////        String json =  fileOperator.read("missions.json");
-////        Gson gson = new Gson();
-////        missions = new Missions(5);
-////        // convert JSON string to Mission object
-////        missions = gson.fromJson(json, Missions.class);
-//        try {
-//            // create Gson instance
-//            Gson gson = new Gson();
-//
-//            // create a reader
-//            Reader reader = Files.newBufferedReader(Paths.get("missions.json"));
-//
-//            // convert JSON string to Book object
-//            Missions mission = gson.fromJson(reader, Missions.class);
-//            missions = mission;
-//            // print book
-//
-//            // close reader
-//            System.out.println(missions.levels);
-//            reader.close();
-//
-//        } catch (Exception ex) {
-//            System.out.println(1);
-//        }
-//    }
 
     public boolean buy(String animalName) {
         if (animalName.equalsIgnoreCase("hen")){
             if (account.coins>=100) {
-//                Hen hen = new Hen(pane);
-//                domesticAnimals.add(hen);
                 account.coins-=100;
                 if (step.goalDomesticAnimalName.length()!=0&&step.goalDomesticAnimalName.equalsIgnoreCase(animalName))
                     goalDomesticNum++;
@@ -144,8 +109,6 @@ public class Manager {
                  }return false;
         }else if (animalName.equalsIgnoreCase("turkey")){
                 if (account.coins>=200){
-//                    Turkey turkey = new Turkey(pane);
-//                    domesticAnimals.add(turkey);
                     account.coins-=200;
                     if (step.goalDomesticAnimalName.length()!=0&&step.goalDomesticAnimalName.equalsIgnoreCase(animalName))
                         goalDomesticNum++;
@@ -153,8 +116,6 @@ public class Manager {
                 }return false;
         }else if (animalName.equalsIgnoreCase("buffalo")){
             if (account.coins>=400) {
-//                Buffalo buffalo = new Buffalo(pane);
-//                domesticAnimals.add(buffalo);
                 account.coins-=400;
                 if (step.goalDomesticAnimalName.length()!=0&&step.goalDomesticAnimalName.equalsIgnoreCase(animalName))
                     goalDomesticNum++;
@@ -162,8 +123,6 @@ public class Manager {
             }return false;
         }else if (animalName.equalsIgnoreCase("cat")){
             if (account.coins>=150) {
-//                Cat cat = new Cat(pane);
-//                cats.add(cat);
                 account.coins-=150;
                 if (step.goalDomesticAnimalName.length()!=0&&step.goalDomesticAnimalName.equalsIgnoreCase(animalName))
                     goalDomesticNum++;
@@ -171,8 +130,6 @@ public class Manager {
             }return false;
         }else if (animalName.equalsIgnoreCase("hound")){
             if (account.coins>=100) {
-//                Hound hound = new Hound(pane);
-//                hounds.add(hound);
                 account.coins-=100;
                 if (step.goalDomesticAnimalName.length()!=0&&step.goalDomesticAnimalName.equalsIgnoreCase(animalName))
                     goalDomesticNum++;
@@ -255,7 +212,6 @@ public class Manager {
     }
 
     public boolean pickUpCage(String x0, String y0) {
-        // TODO: 6/16/2021 بازبینی
         int x = Integer.parseInt(x0);
         int y = Integer.parseInt(y0);
         if (x>6||y>6||x<1||y<1)
@@ -323,8 +279,6 @@ public class Manager {
     }
 
     public boolean truckLoad(String itemName) {
-//        if (truck.isGo)
-//            return false;
         if (itemName.equalsIgnoreCase("lion")){
             if (truck.MAX_CAPACITY - truck.capacity >=15){
                 if (store.numProduct(AnimalType.LION)!=0){
@@ -482,8 +436,6 @@ public class Manager {
     }
 
     public boolean truckUnLoad(String itemName) {
-//        if (truck.isGo)
-//            return false;
         if (itemName.equalsIgnoreCase("lion")){
             if (store.MAX_CAPACITY - store.capacity >=15){
                 if (truck.numProduct(AnimalType.LION)!=0){
@@ -753,17 +705,14 @@ public class Manager {
                             }
                         }
                     }
-                    // TODO: 6/21/2021 logsave
                     if (wildAnimal.time >= wildAnimal.max_time) {
                         diedWildAnimals.add(wildAnimal);
-                        // TODO: 7/15/2021 escape from cage
                         account.logSave("Info", "caged " + wildAnimal.animalType + " escaped with passing time");
                     }
                 }
                 for (WildAnimal diedWildAnimal : diedWildAnimals) {
                     wildAnimals.remove(diedWildAnimal);
                     pane.getChildren().remove(diedWildAnimal);
-                    // TODO: 7/15/2021 escape from cage
                 }
                 for (DomesticAnimal domesticAnimal : diedDomesticAnimal) {
                     domesticAnimals.remove(domesticAnimal);
@@ -866,7 +815,6 @@ public class Manager {
                                 domesticAnimals.add(hen);
                                 break;
                         }
-                        // TODO: 7/15/2021 factory
                         if (factory.factoryName != FactoryName.INCUBATOR) {
                             Random random = new Random();
                             int x = 1 + random.nextInt(421);
@@ -1169,44 +1117,18 @@ public class Manager {
     }
 
     public boolean endGame( ) {
-        // TODO: 6/19/2021
         if (goalCoins(step)){
         }
         if (goalDomesticAnimal(step)){
         }
         if (goalProduct(step)){
         }
-        if (goalCoins(step)&&goalDomesticAnimal(step)&&goalProduct(step))
+        if ((goalCoins(step)||starCionImg.isVisible())&&goalDomesticAnimal(step)&&goalProduct(step))
             return true;
         return false;
-//        goalDomesticAnimal = tasks.goalDomesticAnimal;
-//        goalProduct = tasks.goalProduct;
-//        if (tasks.goalCoins!=0){
-//            if (account.coins>=tasks.goalCoins){
-//                if (tasks.goalDomesticAnimal==null){
-//                    if (tasks.goalProduct==null){
-//                        return true;
-//                    }else{
-//                        if (tasks.numOfGoalProduct<=numOfProduct(tasks.goalProduct.productType)){
-//                            return true;
-//                        }return false;
-//                    }
-//                }else {
-//                    if (tasks.numOfGoalDomesticAnimal<=numOfDomesticAnimal(tasks.goalDomesticAnimal.animalType)){
-//                        if ()
-//                    }
-//
-//                }
-//            }else {
-//
-//            }
-//
-//        }return false;
     }
     public boolean goalCoins(Step step){
         if (step.goalCoin!=0){
-//            if (maxCoin<account.coins)
-//            maxCoin = account.coins;
             if (account.coins>= step.goalCoin){
                 starCionImg.setVisible(true);
                 return true;
@@ -1227,8 +1149,6 @@ public class Manager {
     }
     public boolean goalProduct(Step step){
         if (step.goalProductName.length()!=0){
-//            if (maxProduct <numOfProduct(tasks.goalProduct.productType))
-//            maxProduct = numOfProduct(tasks.goalProduct.productType);
             if (goalProductNum>= step.goalProductNum) {
                  starProductImg.setVisible(true);
                 return true;

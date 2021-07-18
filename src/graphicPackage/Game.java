@@ -77,6 +77,7 @@ public class Game extends Application {
     public ImageView starProductImg;
     public ImageView starCionImg;
     public ImageView starDomesticImg;
+    public Label coinTruckLabel;
     AnimalTransition animalTransition;
     WellTransition wellTransition ;
     boolean instore , intruck;
@@ -92,7 +93,7 @@ public class Game extends Application {
     BakeryTransition bakeryTransition;
     SewingTransition sewingTransition;
     IcecreamTransition icecreamTransition;
-
+    PocketTransition pocketTransition;
 
     @FXML
      Pane gamePane;
@@ -141,8 +142,7 @@ public class Game extends Application {
         listOfAccounts = new ListOfAccounts();
         listOfAccounts.load();
         readUser();
-
-
+        stage.setResizable(false);
         manager = new Manager(account , gamePane , wellSuccessLabel , storeSuccess , storeFail , eggpowderLabel
                 , weavingLabel , pocketMilkLabel , bakeryLabel , sewingLabel , icecreamLabel , incubatorLabel
                 , truckImg , coinLabel , timeLabel , starProductImg,starCionImg ,starDomesticImg);
@@ -155,6 +155,7 @@ public class Game extends Application {
          bakeryTransition = new BakeryTransition(bakeryImg , manager.bakery.level);
          sewingTransition = new SewingTransition(sewingImg , manager.sewingFactory.level);
          icecreamTransition = new IcecreamTransition(icecreamImg , manager.icecreamFactory.level);
+        pocketTransition = new PocketTransition(pocketMilkImg , manager.pocketMilkFactory.level);
 
         if (manager.step.goalCoin==0)
         goalCoinLabel.setVisible(false);
@@ -177,6 +178,8 @@ public class Game extends Application {
         coinLabel.setText(String.valueOf(account.getCoins()));
         truck = Truck.getInstance();
         store = Store.getInstanceStore();
+        store.clear();
+        truck.clear();
         wateringSystem = WateringSystem.getInstanceWateringSystem();
         animalTransition = new AnimalTransition(manager , lowCoinLabel , lowWellLabel , storeSuccess , storeFail , this);
         animalTransition.play();
@@ -418,7 +421,7 @@ public class Game extends Application {
             manager.pocketMilkFactory.upgrade();
             account.logSave("Info", "POCKET MILK FACTORY upgrade successfully");
             upgradePocketMilkBtn.setVisible(false);
-            pocketMilkImg.setImage(new Image("source/factory/pocketMilkL2.png"));
+            pocketMilkImg.setImage(new Image("source/factory/20.png"));
         }else if (!manager.pocketMilkFactory.work){
             account.logSave("Error" , "coins is not enough");
             lowCoinLabel.setText("Coin is not enough");
@@ -428,7 +431,7 @@ public class Game extends Application {
     public void workPocketMilk(){
         if (manager.work("pocketMilkFactory")){
             pocketMilkLabel.setText("wait 6 Sec...");
-            // TODO: 7/15/2021
+            pocketTransition.play();
         }else {
             account.logSave("Error" , "MILK is not enough to work POCKET MILK FACTORY");
         }
@@ -549,7 +552,6 @@ public class Game extends Application {
     public void workIncubator( ) {
         if (manager.work("incubator")){
             incubatorLabel.setText("wait 6 Sec...");
-            // TODO: 7/15/2021
         }else {
             account.logSave("Error" , "EGG is not enough to work INCUBATOR");
         }
@@ -586,18 +588,31 @@ public class Game extends Application {
         addSuccessLabel.setText("");
     }
     public void storeClick( ) {
+        coinTruckLabel.setText("");
         instore = true;
         intruck = false;
+        goalLabels();
         capacityLabel.setText(String.valueOf(store.capacity));
         animationsPause();
         truckGoBtn.setVisible(false);
         setLabelsStore();
         storeListPane.setVisible(true);
     }
-
+    private void goalLabels(){
+        if (goalCoinLabel.isVisible()){
+            goalCoinLabel.setText(String.valueOf("coin : "+manager.step.goalCoin)+" / "+account.getCoins());
+        }
+        if (goalProductLabel.isVisible()){
+            goalProductLabel.setText(manager.step.goalProductName+" : "+manager.step.goalProductNum+" / "+manager.goalProductNum);
+        }
+        if (goalDomesticAnimalLabel.isVisible())
+            goalDomesticAnimalLabel.setText(manager.step.goalDomesticAnimalName+" : "+manager.step.goalDomesticAnimalNum+" / "+manager.goalDomesticNum);
+    }
     public void truckClick( ) {
         instore = false;
         intruck = true;
+        goalLabels();
+        coinTruckLabel.setText(String.valueOf(truck.wholeCoins()));
         capacityLabel.setText(String.valueOf(truck.capacity));
         animationsPause();
         storeListPane.setVisible(true);
@@ -1072,7 +1087,7 @@ public class Game extends Application {
         listOfAccounts.save();
         animalTransition.stop();
         Main main = new Main();
-        main.goToMenu(stage);
+        main.goToWin(stage);
     }
     private void animationsPause(){
         animalTransition.pause();
@@ -1088,6 +1103,8 @@ public class Game extends Application {
             sewingTransition.pause();
         if (manager.icecreamFactory.work)
             icecreamTransition.pause();
+        if (manager.pocketMilkFactory.work)
+            pocketTransition.pause();
     }
     private void animationsResume(){
         animalTransition.playFromStart();
@@ -1103,5 +1120,7 @@ public class Game extends Application {
             sewingTransition.play();
         if (manager.icecreamFactory.work)
             icecreamTransition.play();
+        if (manager.pocketMilkFactory.work)
+            pocketTransition.play();
     }
 }

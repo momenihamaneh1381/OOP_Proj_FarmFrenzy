@@ -103,7 +103,6 @@ public class AnimalTransition extends Transition {
                 if (manager.turn(1)){
                 }else {
                     try {
-                        System.out.println("level complete!");
                         game.end();
                     } catch (IOException e) {
                         e.printStackTrace();

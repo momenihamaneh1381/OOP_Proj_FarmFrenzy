@@ -4,7 +4,6 @@ package graphicPackage;
 import classes.Account;
 import classes.ListOfAccounts;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -14,8 +13,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
 import java.util.Scanner;
 
 public class Menu   {
@@ -41,7 +38,6 @@ public class Menu   {
     }
 
     public void setting( ) {
-        // TODO: 7/12/2021
     }
 
     public void logout( ) throws IOException {
@@ -74,7 +70,6 @@ public class Menu   {
                 fileWriter.write(username +"\n" +levelTxt.getText() );
                 fileWriter.close();
                 Main main = new Main();
-//                main.startGame();
                 main.closeScene();
                 Game game = new Game();
                 game.start(new Stage());

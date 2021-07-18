@@ -49,14 +49,6 @@ public class Animal extends Rectangle {
 
     public AnimalType animalType;
 
-    public String getUrl() {
-        // TODO: 7/14/2021
-//        return url;
-        return "/source/hen.jpg";
-    }
-
-    String url;
-
     public int getSpeed() {
         return speed;
     }
@@ -71,9 +63,6 @@ public class Animal extends Rectangle {
         this.animalType = animalType;
         this.speed = speed;
         Random random =  new Random();
-//        theta = 45;
-//        x= 423;
-//        y =270;
         theta = random.nextInt(360);
         x =61+  random.nextInt(300);
         y =61+  random.nextInt(150);
@@ -109,6 +98,5 @@ public class Animal extends Rectangle {
 
     public void setBackGround(String url){
         this.setFill(new ImagePattern(new Image(getClass().getResource(url).toExternalForm())));
-//        this.setFill;
     }
 }

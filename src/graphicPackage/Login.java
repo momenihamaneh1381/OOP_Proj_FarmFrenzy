@@ -2,7 +2,6 @@ package graphicPackage;
 
 import classes.Account;
 import classes.ListOfAccounts;
-import classes.Missions;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -43,7 +42,6 @@ public class Login {
                 file.close();
                 account = getAccount(userNameTxt.getText());
                 account.logSave("Info" , userNameTxt.getText()+" login successfully");
-                // TODO: 7/12/2021 username.txt
                 main.goToMenu();
             }
 
